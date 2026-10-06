@@ -11,6 +11,7 @@
     <meta name="theme-color" content="#ffffff" />
     <meta name="color-scheme" content="light" />
     <link rel="icon" href="data:," />
+    <link rel="preload" as="image" href="assets/vsl-poster.webp" fetchpriority="high" />
     <link
       rel="preload"
       href="assets/fonts/cairo-arabic-600.woff2"
@@ -319,15 +320,6 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-      }
-      .vsl-word {
-        position: absolute;
-        inset: 0;
-        display: grid;
-        place-items: center;
-        font: 600 64px/1 var(--font);
-        letter-spacing: 4px;
-        color: rgba(255, 255, 255, 0.08);
       }
       .vsl-play {
         position: relative;
@@ -1175,14 +1167,18 @@
           <div class="vsl" id="vsl">
             <button type="button" class="vsl-start" id="vsl-start">
               <span class="sr">شغّل الفيديو بالصوت</span>
-              <!-- POSTER: when the real VSL is ready, add its poster here (it becomes the LCP image):
-             <img src="assets/vsl-poster-720.webp" srcset="assets/vsl-poster-480.webp 480w, assets/vsl-poster-720.webp 720w, assets/vsl-poster-1024.webp 1024w"
-                  sizes="(min-width:600px) 528px, calc(100vw - 32px)" width="1280" height="720" alt="" fetchpriority="high" decoding="async"> -->
-              <span class="vsl-word ltr" aria-hidden="true">VSL</span>
+              <img
+                src="assets/vsl-poster.webp"
+                width="1182"
+                height="663"
+                alt=""
+                fetchpriority="high"
+                decoding="async"
+              />
               <span class="vsl-play"
                 ><svg><use href="#i-play" /></svg
               ></span>
-              <span class="vsl-len ltr" id="vsl-len">2:30</span>
+              <span class="vsl-len ltr" id="vsl-len">0:57</span>
             </button>
           </div>
 
@@ -1649,8 +1645,8 @@
         thankYou: "thank-you.html",
         setupFee: 4500, // qualifying line: the 7-day loss must be at least this
         vsl: {
-          src: "dev/test-vsl.mp4", // PLACEHOLDER test video. Replace with the real R2 MP4 URL
-          length: "2:30", // shown on the poster. Real length, rounded UP
+          src: "https://pub-5c7d4f3751e0495ba4f69c36d0d335f9.r2.dev/SAFEWATSVSL.mp4", // the old (free-offer) VSL for now; swap for the paid VSL
+          length: "0:57", // shown on the poster. Real length, rounded UP
         },
       };
 
