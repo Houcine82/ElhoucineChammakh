@@ -11,7 +11,24 @@
     <meta name="theme-color" content="#ffffff" />
     <meta name="color-scheme" content="light" />
     <link rel="icon" href="data:," />
-    <link rel="preload" as="image" href="assets/vsl-poster.webp" fetchpriority="high" />
+    <link
+      rel="preload"
+      as="image"
+      href="assets/vsl-poster.webp"
+      fetchpriority="high"
+    />
+    <script>
+      // VSL gate, decided before first paint so returning visitors never see a flash
+      (function () {
+        var warm = /[?&]warm=1(&|$)/.test(location.search),
+          seen = false;
+        try {
+          if (warm) localStorage.setItem("paid_vsl_watched", "1");
+          seen = localStorage.getItem("paid_vsl_watched") === "1";
+        } catch (e) {}
+        if (warm || seen) document.documentElement.classList.add("vsl-open");
+      })();
+    </script>
     <style>
       :root {
         --bg: #ffffff;
@@ -45,8 +62,8 @@
         --shadow:
           0 1px 2px rgba(23, 32, 27, 0.06), 0 8px 24px rgba(23, 32, 27, 0.07);
         --font:
-          system-ui, -apple-system, "Segoe UI", "Noto Sans Arabic",
-          "Geeza Pro", Tahoma, Arial, sans-serif;
+          system-ui, -apple-system, "Segoe UI", "Noto Sans Arabic", "Geeza Pro",
+          Tahoma, Arial, sans-serif;
       }
       *,
       *::before,
@@ -66,11 +83,21 @@
       body {
         position: relative;
         margin: 0;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
         background: var(--bg);
         color: var(--ink);
         font: 600 17px/1.75 var(--font);
         font-synthesis: none;
         text-rendering: optimizeSpeed;
+      }
+      /* grow to fill a short (locked) page so the footer sits at the very bottom;
+         the filled tail is warm to match the testimonials container + footer */
+      main {
+        flex: 1 0 auto;
+        background: var(--bg-warm);
       }
       @media (prefers-reduced-motion: reduce) {
         html {
@@ -162,6 +189,7 @@
       .sec {
         padding: 40px 0;
         border-top: 1px solid var(--line);
+        background: var(--bg);
       }
       .warm {
         background: var(--bg-warm);
@@ -240,6 +268,7 @@
       /* ---------- hero + VSL ---------- */
       .hero {
         padding: 28px 0 32px;
+        background: var(--bg);
       }
       .hero h1 {
         font-size: 27px;
@@ -317,6 +346,95 @@
         color: #fff;
         font: 600 14px/1.5 var(--font);
       }
+      /* custom player: fast-start bar + pause / back 10s / mute only */
+      .vsl video {
+        cursor: pointer;
+      }
+      .vsl-pause {
+        position: absolute;
+        inset: 0;
+        display: none;
+        place-items: center;
+        pointer-events: none;
+      }
+      .vsl.paused .vsl-pause {
+        display: grid;
+      }
+      .vctl {
+        direction: ltr;
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .vbtn {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface);
+        color: var(--ink);
+        cursor: pointer;
+      }
+      .vbtn svg {
+        width: 20px;
+        height: 20px;
+      }
+      .vbtn .on-play,
+      .vctl.playing .vbtn .on-pause,
+      .vbtn .on-muted,
+      .vctl.muted .vbtn .on-sound {
+        display: none;
+      }
+      .vctl.playing .vbtn .on-play,
+      .vctl.muted .vbtn .on-muted {
+        display: block;
+      }
+      .vprog {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.25);
+        direction: ltr;
+      }
+      .vprog i {
+        display: block;
+        width: 0;
+        height: 100%;
+        background: var(--wa);
+        transition: width 0.25s linear;
+      }
+      /* VSL gate: the calculator (and the buttons to it) appear at 90% of the video */
+      html:not(.vsl-open) #calc,
+      html:not(.vsl-open) .cta[href="#calc"] {
+        display: none;
+      }
+      /* testimonials gate: heading + real proof hidden until 90% of the VSL; locked prompt shown until then */
+      html:not(.vsl-open) #testimonials h2,
+      html:not(.vsl-open) #testimonials .t-proof {
+        display: none;
+      }
+      .vsl-open #testimonials .t-locked {
+        display: none;
+      }
+      .t-locked {
+        cursor: pointer;
+      }
+      .vsl-open .vprog {
+        cursor: pointer;
+      }
+      .vsl-open .vprog::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 28px;
+      }
       .vsl-msg {
         position: absolute;
         inset: auto 12px 12px 12px;
@@ -327,7 +445,6 @@
         font-size: 14px;
         text-align: center;
       }
-
 
       /* ---------- placeholders (remove when real assets land) ---------- */
       .ph {
@@ -1098,6 +1215,19 @@
       <symbol id="i-play" viewBox="0 0 24 24">
         <path d="M7 4.5v15l12.5-7.5z" />
       </symbol>
+      <symbol id="i-sound" viewBox="0 0 24 24">
+        <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" />
+        <path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </symbol>
+      <symbol id="i-muted" viewBox="0 0 24 24">
+        <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" />
+        <path d="m16 9.5 5 5m0-5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </symbol>
+      <symbol id="i-back10" viewBox="0 0 24 24">
+        <path d="M4 12a8 8 0 1 0 2.6-5.9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        <path d="M4 3.5V8h4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <text x="12.4" y="15.6" font-size="7.5" font-weight="700" text-anchor="middle" fill="currentColor" font-family="system-ui,Arial">10</text>
+      </symbol>
       <symbol id="i-pause" viewBox="0 0 24 24">
         <path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z" />
       </symbol>
@@ -1139,8 +1269,8 @@
               <span class="sr">شغّل الفيديو بالصوت</span>
               <img
                 src="assets/vsl-poster.webp"
-                width="1182"
-                height="663"
+                width="1072"
+                height="606"
                 alt=""
                 fetchpriority="high"
                 decoding="async"
@@ -1148,7 +1278,7 @@
               <span class="vsl-play"
                 ><svg><use href="#i-play" /></svg
               ></span>
-              <span class="vsl-len ltr" id="vsl-len">0:57</span>
+              <span class="vsl-len ltr" id="vsl-len">2:16</span>
             </button>
           </div>
 
@@ -1163,6 +1293,14 @@
             نهار بلا مايتبلوكا ليهم الواتساب...<br />شوف شنو كايقولو!
           </h2>
 
+          <!-- locked prompt: shown until the VSL reaches 90%, then the proof + CTA replace it -->
+          <a href="#vsl" class="cta locked t-locked">
+            <svg class="ico lock"><use href="#i-lock" /></svg>
+            <span class="cta-label">شوف الفيديو باش تكمل</span>
+          </a>
+
+          <!-- real testimonial proof: hidden until the VSL reaches 90% -->
+          <div class="t-proof">
           <!-- PLACEHOLDER: set data-video to the testimonial MP4 URL, and add a poster <img> inside -->
           <button type="button" class="tvid ph" data-video="">
             <span class="sr">شغّل الشهادة بالفيديو</span>
@@ -1199,6 +1337,7 @@
               ></span
             >
           </figure>
+          </div>
 
           <a href="#calc" class="cta">شوف شحال كايخسّرك الحضر د واتساب</a>
         </div>
@@ -1568,7 +1707,7 @@
                 <label class="consent"
                   ><input type="checkbox" name="consent" value="yes" required />
                   <span
-                    >موافق باش يتواصل معايا الحسين شماخ فالواتساب بخصوص الطلب
+                    >موافق باش يتواصل معايا الحسين شماخ بالتيليفون ولا فالواتساب بخصوص الطلب
                     ديالي، وقريت
                     <a href="privacy.html" target="_blank" rel="noopener"
                       >سياسة الخصوصية</a
@@ -1581,7 +1720,7 @@
               <button type="submit" class="cta" id="submit">
                 بغيت نحمي مشروعي دابا!
               </button>
-              <p class="reassure">غادي نتواصل معاك فالواتساب باش نحددو موعد</p>
+              <p class="reassure">غادي نعيط ليك باش نحددو موعد</p>
               <p class="form-err" id="form-err" role="alert">
                 ماتصيفطش الطلب، عاود جرب من فضلك.
               </p>
@@ -1615,8 +1754,9 @@
         thankYou: "thank-you.html",
         setupFee: 4500, // qualifying line: the 7-day loss must be at least this
         vsl: {
-          src: "https://pub-5c7d4f3751e0495ba4f69c36d0d335f9.r2.dev/SAFEWATSVSL.mp4", // the old (free-offer) VSL for now; swap for the paid VSL
-          length: "0:57", // shown on the poster. Real length, rounded UP
+          src: "https://pub-5c7d4f3751e0495ba4f69c36d0d335f9.r2.dev/ELHOUCINEPAIDVSL.mp4", // paid-offer VSL (16:9 landscape)
+          length: "2:16", // shown on the poster. Real length, rounded UP
+          fastStart: { at: 35, show: 0.4 }, // the bar shows 40% after 35s (or after 25% of a shorter video), then a natural pace
         },
       };
 
@@ -1663,10 +1803,43 @@
           scrollToId(a.getAttribute("href").slice(1));
         });
 
-        /* ---------- VSL (open: click to load, normal controls) ---------- */
+        /* ---------- VSL: tap to play, fast-start bar, only pause / back 10s / mute ---------- */
         var vsl = $("vsl"),
           start = $("vsl-start");
         $("vsl-len").textContent = CONFIG.vsl.length;
+        var POS_KEY = "paid_vsl_pos";
+        function isOpen() {
+          return root.classList.contains("vsl-open");
+        }
+        function openGate() {
+          if (isOpen()) return;
+          root.classList.add("vsl-open");
+          try {
+            localStorage.setItem("paid_vsl_watched", "1");
+          } catch (e) {}
+        }
+        function savedPos() {
+          try {
+            return parseFloat(localStorage.getItem(POS_KEY)) || 0;
+          } catch (e) {
+            return 0;
+          }
+        }
+        function savePos(t) {
+          try {
+            localStorage.setItem(POS_KEY, String(Math.floor(t)));
+          } catch (e) {}
+        }
+        function shown(t, dur) {
+          // front-loaded bar: fast at first, then a natural pace to the end.
+          // Once unlocked the bar shows real progress, since it becomes tappable to seek
+          if (!dur) return 0;
+          var r = Math.min(1, t / dur);
+          if (isOpen()) return r;
+          var k = Math.min(CONFIG.vsl.fastStart.at, dur * 0.25) / dur,
+            s = CONFIG.vsl.fastStart.show;
+          return r <= k ? s * (r / k) : s + (1 - s) * ((r - k) / (1 - k));
+        }
         function startVideo() {
           if (!CONFIG.vsl.src) {
             if (!vsl.querySelector(".vsl-msg")) {
@@ -1680,14 +1853,91 @@
           var v = d.createElement("video");
           v.setAttribute("playsinline", "");
           v.setAttribute("webkit-playsinline", "");
-          v.setAttribute("controlslist", "nodownload");
+          v.setAttribute("disablepictureinpicture", "");
+          v.setAttribute("disableremoteplayback", "");
           v.preload = "auto";
           v.playsInline = true;
-          v.controls = true;
           v.src = CONFIG.vsl.src;
+
+          var ctl = d.createElement("div");
+          ctl.className = "vctl";
+          ctl.innerHTML =
+            '<button type="button" class="vbtn" data-a="toggle" aria-label="وقّف / كمّل"><svg class="on-pause" fill="currentColor"><use href="#i-play"/></svg><svg class="on-play" fill="currentColor"><use href="#i-pause"/></svg></button>' +
+            '<button type="button" class="vbtn" data-a="back" aria-label="رجع 10 ثواني"><svg><use href="#i-back10"/></svg></button>' +
+            '<button type="button" class="vbtn" data-a="mute" aria-label="الصوت"><svg class="on-sound"><use href="#i-sound"/></svg><svg class="on-muted"><use href="#i-muted"/></svg></button>';
+          var bar = d.createElement("div");
+          bar.className = "vprog";
+          bar.setAttribute("aria-hidden", "true");
+          bar.innerHTML = "<i></i>";
+          var big = d.createElement("span");
+          big.className = "vsl-pause";
+          big.setAttribute("aria-hidden", "true");
+          big.innerHTML = '<span class="vsl-play"><svg><use href="#i-play"/></svg></span>';
+
+          function toggle() {
+            v.paused ? v.play().catch(function () {}) : v.pause();
+          }
+          v.addEventListener("click", toggle);
+          v.addEventListener("play", function () {
+            ctl.classList.add("playing");
+            vsl.classList.remove("paused");
+          });
+          v.addEventListener("pause", function () {
+            ctl.classList.remove("playing");
+            vsl.classList.add("paused");
+          });
+          v.addEventListener("volumechange", function () {
+            ctl.classList.toggle("muted", v.muted);
+          });
+          var furthest = 0,
+            lastSaved = -1;
+          v.addEventListener("loadedmetadata", function () {
+            // resume where they stopped (unless that was the very end)
+            var p = savedPos();
+            if (p > 0 && p < v.duration - 3) {
+              v.currentTime = p;
+              furthest = p;
+            }
+          });
+          v.addEventListener("timeupdate", function () {
+            var t = v.currentTime;
+            if (!isOpen()) {
+              // seek guard: no jumping past the furthest point watched (media keys, devtools...)
+              if (t > furthest + 2) {
+                v.currentTime = furthest;
+                return;
+              }
+              furthest = Math.max(furthest, t);
+              if (v.duration && t >= v.duration * 0.9) openGate();
+            }
+            if (Math.floor(t) !== lastSaved) savePos((lastSaved = Math.floor(t)));
+            bar.firstChild.style.width = shown(t, v.duration) * 100 + "%";
+          });
+          v.addEventListener("ended", function () {
+            bar.firstChild.style.width = "100%";
+            savePos(0);
+          });
+          bar.addEventListener("click", function (e) {
+            if (!isOpen() || !v.duration) return;
+            var r = bar.getBoundingClientRect();
+            v.currentTime = ((e.clientX - r.left) / r.width) * v.duration;
+          });
+          ctl.addEventListener("click", function (e) {
+            var b = e.target.closest("button");
+            if (!b) return;
+            if (b.dataset.a === "toggle") toggle();
+            else if (b.dataset.a === "back") v.currentTime = Math.max(0, v.currentTime - 10);
+            else if (b.dataset.a === "mute") v.muted = !v.muted;
+          });
+
           vsl.insertBefore(v, start);
+          vsl.appendChild(big);
+          vsl.appendChild(bar);
+          vsl.after(ctl); // under the video, so the buttons never cover burned-in subtitles
           start.hidden = true;
-          v.play().catch(function () {});
+          v.play().catch(function () {
+            vsl.classList.add("paused");
+          });
         }
         start.addEventListener("click", startVideo);
 
