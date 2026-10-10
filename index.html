@@ -136,6 +136,7 @@
       .pb2 b,
       label b,
       legend b,
+      .t-who b,
       .res strong {
         text-decoration: none;
       }
@@ -580,9 +581,68 @@
         color: var(--muted);
         font-size: 12px;
       }
+      /* one testimonial = who (logo + name + business) above the proof */
+      .t-item {
+        margin-top: 26px;
+      }
+      .t-who {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        line-height: 1.35;
+      }
+      .t-who div b {
+        display: block;
+        font-size: 16px;
+      }
+      .t-who div span {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .t-logo {
+        flex: none;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid var(--line);
+        object-fit: contain;
+      }
+      .t-logo.ph {
+        padding: 0;
+        border-width: 2px;
+        font-size: 10px;
+      }
+      .t-anon {
+        display: grid;
+        place-items: center;
+        background: var(--locked-bg);
+      }
+      .t-anon svg {
+        width: 26px;
+        height: 26px;
+        fill: none;
+        stroke: var(--locked-ink);
+        stroke-width: 1.8;
+        stroke-linecap: round;
+      }
+      .t-item .vn,
+      .t-item .shot {
+        margin-top: 10px;
+      }
       .shot {
         margin: 14px 0 0;
+      }
+      .shot.ph {
         aspect-ratio: 2/1;
+      }
+      .shot img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid var(--line);
+        border-radius: var(--r);
       }
 
       /* ---------- calculator ---------- */
@@ -1282,6 +1342,81 @@
         }
       }
     </style>
+
+    <!-- PostHog (product analytics). Lean setup: VSL retention funnel only. -->
+    <script>
+      (function () {
+        // ↓↓↓ paste your PostHog project API key here (looks like phc_xxxxxxxx) ↓↓↓
+        var PH_KEY = "phc_xqFmUf2D6JxxXGu9GYgLHpKc2vudmVDCdDtHYrzTQuyq";
+        // EU project host. If your PostHog project is US, use https://us.i.posthog.com
+        var PH_HOST = "https://eu.i.posthog.com";
+        if (!PH_KEY) return; // not configured yet → analytics off, page works normally
+        !(function (t, e) {
+          var o, n, p, r;
+          e.__SV ||
+            ((window.posthog = e),
+            (e._i = []),
+            (e.init = function (i, s, a) {
+              function g(t, e) {
+                var o = e.split(".");
+                (2 == o.length && ((t = t[o[0]]), (e = o[1])),
+                  (t[e] = function () {
+                    t.push(
+                      [e].concat(Array.prototype.slice.call(arguments, 0)),
+                    );
+                  }));
+              }
+              (((p = t.createElement("script")).type = "text/javascript"),
+                (p.crossOrigin = "anonymous"),
+                (p.async = !0),
+                (p.src =
+                  s.api_host.replace(
+                    ".i.posthog.com",
+                    "-assets.i.posthog.com",
+                  ) + "/static/array.js"),
+                (r =
+                  t.getElementsByTagName("script")[0]).parentNode.insertBefore(
+                  p,
+                  r,
+                ));
+              var u = e;
+              for (
+                void 0 !== a ? (u = e[a] = []) : (a = "posthog"),
+                  u.people = u.people || [],
+                  u.toString = function (t) {
+                    var e = "posthog";
+                    return (
+                      "posthog" !== a && (e += "." + a),
+                      t || (e += " (stub)"),
+                      e
+                    );
+                  },
+                  u.people.toString = function () {
+                    return u.toString(1) + ".people (stub)";
+                  },
+                  o =
+                    "init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(
+                      " ",
+                    ),
+                  n = 0;
+                n < o.length;
+                n++
+              )
+                g(u, o[n]);
+              e._i.push([i, s, a]);
+            }),
+            (e.__SV = 1));
+        })(document, window.posthog || []);
+        posthog.init(PH_KEY, {
+          api_host: PH_HOST,
+          autocapture: false, // no automatic click/scroll events
+          capture_pageview: true, // one $pageview per visit (land→play rate)
+          capture_pageleave: false,
+          disable_session_recording: true, // recordings off
+          person_profiles: "identified_only", // no person profiles created
+        });
+      })();
+    </script>
   </head>
   <body>
     <svg style="display: none" aria-hidden="true">
@@ -1409,44 +1544,94 @@
 
           <!-- real testimonial proof: hidden until the VSL reaches the ~1:59 mark -->
           <div class="t-proof">
-            <!-- PLACEHOLDER: set data-video to the testimonial MP4 URL, and add a poster <img> inside -->
-            <button type="button" class="tvid ph" data-video="">
-              <span class="sr">شغّل الشهادة بالفيديو</span>
-              <span class="vsl-play"
-                ><svg><use href="#i-play" /></svg
-              ></span>
-              <span class="ltr"
-                >VIDEO TESTIMONIAL<small>PLACEHOLDER</small></span
-              >
-            </button>
-
-            <!-- PLACEHOLDER: set data-src to the voice note MP3, and data-d / the text to its real length -->
-            <div class="vn" data-src="">
-              <button
-                type="button"
-                class="vn-btn"
-                aria-label="شغّل الميساج الصوتي"
-              >
-                <svg class="i-play"><use href="#i-play" /></svg
-                ><svg class="i-pause"><use href="#i-pause" /></svg>
-              </button>
-              <div class="vn-main">
-                <div class="vn-wave"></div>
-                <div class="vn-meta">
-                  <span>ميساج صوتي من كليان (placeholder)</span
-                  ><span class="vn-t ltr" data-d="0:00">0:00</span>
+            <!-- 1. voice note: Abderrahim, GoForVisa -->
+            <div class="t-item">
+              <div class="t-who">
+                <img
+                  class="t-logo"
+                  src="assets/proof/logo-goforvisa.webp"
+                  width="48"
+                  height="48"
+                  loading="lazy"
+                  decoding="async"
+                  alt="GoForVisa"
+                />
+                <div>
+                  <b class="ltr">Abderrahim</b>
+                  <span class="ltr">GoForVisa</span>
+                </div>
+              </div>
+              <div class="vn" data-src="assets/proof/voice-goforvisa.mp3">
+                <button
+                  type="button"
+                  class="vn-btn"
+                  aria-label="شغّل الميساج الصوتي د عبد الرحيم"
+                >
+                  <svg class="i-play"><use href="#i-play" /></svg
+                  ><svg class="i-pause"><use href="#i-pause" /></svg>
+                </button>
+                <div class="vn-main">
+                  <div class="vn-wave"></div>
+                  <div class="vn-meta">
+                    <span>ميساج صوتي</span
+                    ><span class="vn-t ltr" data-d="1:27">1:27</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- PLACEHOLDER: replace with <figure class="shot"><img src="assets/proof/chat-1.webp" width=".." height=".." loading="lazy" decoding="async" alt="..."></figure> -->
-            <figure class="shot ph">
-              <span class="ltr"
-                >Screenshot of WhatsApp testimonial<small
-                  >PLACEHOLDER</small
-                ></span
-              >
-            </figure>
+            <!-- 2. WhatsApp screenshot: anonymous for privacy -->
+            <div class="t-item">
+              <div class="t-who">
+                <span class="t-logo t-anon" aria-hidden="true"
+                  ><svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="8.5" r="3.5" />
+                    <path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" /></svg
+                ></span>
+                <div>
+                  <b>صاحب مشروع</b>
+                  <span>الاسم مخبي على قبل الخصوصية</span>
+                </div>
+              </div>
+              <figure class="shot">
+                <img
+                  src="assets/proof/chat-1.webp"
+                  width="653"
+                  height="260"
+                  loading="lazy"
+                  decoding="async"
+                  alt="ميساج د شكر من كليان على الواتساب: الخدمة معقولة بزاف وشكرا بزاف"
+                />
+              </figure>
+            </div>
+
+            <!-- 3. PLACEHOLDER voice note: set the logo src + name + business, data-src to the MP3, and data-d / the text to its real length -->
+            <div class="t-item">
+              <div class="t-who">
+                <span class="t-logo ph ltr">LOGO</span>
+                <div>
+                  <b>الاسم (placeholder)</b>
+                  <span>المشروع (placeholder)</span>
+                </div>
+              </div>
+              <div class="vn" data-src="">
+                <button
+                  type="button"
+                  class="vn-btn"
+                  aria-label="شغّل الميساج الصوتي"
+                >
+                  <svg class="i-play"><use href="#i-play" /></svg
+                  ><svg class="i-pause"><use href="#i-pause" /></svg>
+                </button>
+                <div class="vn-main">
+                  <div class="vn-wave"></div>
+                  <div class="vn-meta">
+                    <span>ميساج صوتي (placeholder)</span
+                    ><span class="vn-t ltr" data-d="0:00">0:00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <a href="#calc" class="cta">شوف شحال كايخسّرك الحضر د واتساب</a>
@@ -1921,11 +2106,11 @@
 
     <script>
       var CONFIG = {
-        endpoint: "", // TODO later: CRM endpoint. Empty = the form only validates, then goes to the thank-you page
+        endpoint: "https://leadworker-elhoucinepaidoffer.elhoucinechammakh.workers.dev", // lead worker (fans out to CRM + Telegram + CAPI). Empty = form just validates and goes to thank-you.
         thankYou: "thank-you.html",
         setupFee: 4500, // qualifying line: the 7-day loss must be at least this
         vsl: {
-          src: "https://pub-5c7d4f3751e0495ba4f69c36d0d335f9.r2.dev/ELHOUCINEPAIDVSL.mp4", // paid-offer VSL (16:9 landscape)
+          src: "https://videos.elhoucinechammakh.com/ELHOUCINEPAIDVSL.mp4", // paid-offer VSL (16:9 landscape), R2 via custom domain
           length: "2:16", // shown on the poster. Real length, rounded UP
           fastStart: { at: 35, show: 0.4 }, // the bar shows 40% after 35s (or after 25% of a shorter video), then a natural pace
         },
@@ -2053,6 +2238,7 @@
           v.addEventListener("play", function () {
             ctl.classList.add("playing");
             vsl.classList.remove("paused");
+            phVsl("vsl_play");
           });
           v.addEventListener("pause", function () {
             ctl.classList.remove("playing");
@@ -2063,6 +2249,15 @@
           });
           var furthest = 0,
             lastSaved = -1;
+          // PostHog VSL retention funnel: play -> 25 -> 50 -> 75 -> complete (each once)
+          var phSent = {};
+          function phVsl(name) {
+            if (phSent[name]) return;
+            phSent[name] = 1;
+            try {
+              if (window.posthog && posthog.capture) posthog.capture(name);
+            } catch (e) {}
+          }
           v.addEventListener("loadedmetadata", function () {
             // resume where they stopped (unless that was the very end)
             var p = savedPos();
@@ -2085,11 +2280,18 @@
             }
             if (Math.floor(t) !== lastSaved)
               savePos((lastSaved = Math.floor(t)));
+            if (v.duration) {
+              var pct = t / v.duration;
+              if (pct >= 0.25) phVsl("vsl_25");
+              if (pct >= 0.5) phVsl("vsl_50");
+              if (pct >= 0.75) phVsl("vsl_75");
+            }
             bar.firstChild.style.width = shown(t, v.duration) * 100 + "%";
           });
           v.addEventListener("ended", function () {
             bar.firstChild.style.width = "100%";
             savePos(0);
+            phVsl("vsl_complete");
           });
           bar.addEventListener("click", function (e) {
             if (!isOpen() || !v.duration) return;
@@ -2371,17 +2573,18 @@
           }
 
           var eventId = uuid();
+          // Sent form-encoded (string values) so there's no CORS preflight and
+          // keepalive can finish after the redirect. The worker fans this out.
           var payload = {
-            name: data.name,
+            name: data.name || "",
             phone: phone,
-            business: data.business,
-            ad_spend: data.ad_spend,
-            blocked: data.blocked,
-            consent: true,
-            clients_per_week: +data.clients_per_week,
-            order_value: +data.order_value,
-            weekly_loss: +data.weekly_loss,
-            monthly_loss: +data.monthly_loss,
+            business: data.business || "",
+            ad_spend: data.ad_spend || "",
+            blocked: data.blocked || "",
+            clients_per_week: data.clients_per_week || "",
+            order_value: data.order_value || "",
+            weekly_loss: data.weekly_loss || "",
+            monthly_loss: data.monthly_loss || "",
             website: data.website || "",
             event_id: eventId,
             page_url: location.href,
@@ -2400,11 +2603,10 @@
           var ctrl = w.AbortController ? new AbortController() : null,
             t = setTimeout(function () {
               ctrl && ctrl.abort();
-            }, 10000);
+            }, 5000);
           fetch(CONFIG.endpoint, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload),
+            body: new URLSearchParams(payload),
             keepalive: true,
             signal: ctrl && ctrl.signal,
           })
