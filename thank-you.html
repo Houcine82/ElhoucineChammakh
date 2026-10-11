@@ -26,7 +26,16 @@ footer{padding:20px 16px;border-top:1px solid var(--line);background:var(--warm)
   <div>
     <div class="check"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
     <h1>شكرا! وصلنا الطلب ديالك</h1>
-    <p>غادي نعيط ليك قريب، جاوب على الرقم ديالي.</p>
+    <p id="when">غادي نعيط ليك قريب، جاوب على الرقم ديالي.</p>
+    <script>
+    // Outside calling hours (Morocco time) say when the call will actually come.
+    (function(){
+      var CALLS_START = 10, CALLS_END = 20; // calling hours, 24h
+      var h; try { h = +new Intl.DateTimeFormat('en-GB', { hour: '2-digit', hourCycle: 'h23', timeZone: 'Africa/Casablanca' }).format(new Date()); } catch(e) { return; }
+      var day = h >= CALLS_END ? 'غدا' : h < CALLS_START ? 'اليوم' : null;
+      if (day) document.getElementById('when').textContent = 'غادي نعيط ليك ' + day + ' من ' + CALLS_START + ':00 ديال الصباح، جاوب على الرقم ديالي.';
+    })();
+    </script>
   </div>
 </main>
 <footer dir="ltr">© 2026 CHAMMAKH EL HOUCINE · Fès, Maroc</footer>
