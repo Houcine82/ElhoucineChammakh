@@ -20,8 +20,8 @@ h1{margin:0;font-size:26px;line-height:1.4}
 p{margin:8px 0 0;color:var(--muted)}
 /* the number we call from + a button that opens the phone's "add contact" screen (vCard) */
 .num{margin:14px 0 0;color:var(--ink);font-size:26px;letter-spacing:.04em}
-.save{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:12px 20px;border:1.5px solid var(--cta);border-radius:12px;color:var(--cta);font:inherit;font-size:16px;text-decoration:none}
-.save svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.save{display:inline-flex;align-items:center;gap:8px;max-width:340px;margin-top:14px;padding:12px 20px;line-height:1.5;border:1.5px solid var(--cta);border-radius:12px;color:var(--cta);font:inherit;font-size:16px;text-decoration:none}
+.save svg{flex:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 footer{padding:20px 16px;border-top:1px solid var(--line);background:var(--warm);color:var(--muted);font-size:13px;text-align:center}
 </style>
 </head>
@@ -32,7 +32,7 @@ footer{padding:20px 16px;border-top:1px solid var(--line);background:var(--warm)
     <h1>شكرا! وصلنا الطلب ديالك</h1>
     <p id="when">غادي نعيط ليك قريب من هاد الرقم:</p>
     <p class="num"><bdi dir="ltr">06 05 12 55 57</bdi></p>
-    <a class="save" href="elhoucine-chammakh.vcf"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>سجّل الرقم فالتيليفون ديالك</a>
+    <a class="save" href="elhoucine-chammakh.vcf"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>سجّل الرقم فالتيليفون ديالك باش تعرفني أنا اللي كانصوني عليك</a>
     <script>
     // Outside calling hours (Morocco time) say when the call will actually come.
     (function(){
