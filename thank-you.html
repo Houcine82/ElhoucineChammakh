@@ -30,5 +30,23 @@ footer{padding:20px 16px;border-top:1px solid var(--line);background:var(--warm)
   </div>
 </main>
 <footer dir="ltr">© 2026 CHAMMAKH EL HOUCINE · Fès, Maroc</footer>
+<script>
+var CONFIG = { pixelId: "1706207423798184" }; // same dataset as the landing page
+(function(){
+  var w = window, d = document, eid = new URLSearchParams(location.search).get("eid");
+  try { eid = eid || sessionStorage.getItem("lead_event_id"); } catch(e){}
+  function fire(){
+    if (!CONFIG.pixelId || !eid) return; // opened directly (no lead) => nothing fires
+    try { if (localStorage.getItem("lead_fired_"+eid)) return; } catch(e){} // a refresh doesn't count twice
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;
+    s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(w,d,"script","https://connect.facebook.net/en_US/fbevents.js");
+    fbq("init", CONFIG.pixelId); fbq("track", "PageView");
+    fbq("track", "Lead", {}, { eventID: eid }); // same name + ID as the worker's CAPI event => deduplicated
+    try { localStorage.setItem("lead_fired_"+eid, "1"); } catch(e){}
+  }
+  d.readyState === "complete" ? fire() : w.addEventListener("load", fire);
+})();
+</script>
 </body>
 </html>

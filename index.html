@@ -2107,6 +2107,7 @@
     <script>
       var CONFIG = {
         endpoint: "https://leadworker-elhoucinepaidoffer.elhoucinechammakh.workers.dev", // lead worker (fans out to CRM + Telegram + CAPI). Empty = form just validates and goes to thank-you.
+        pixelId: "1706207423798184", // Meta dataset (same one the free offer used). Empty = no Pixel
         thankYou: "thank-you.html",
         setupFee: 4500, // qualifying line: the 7-day loss must be at least this
         vsl: {
@@ -2137,6 +2138,67 @@
             w.matchMedia("(prefers-reduced-motion: reduce)").matches
           );
         }
+
+        /* ---------- UTM + fbclid capture (kept for the lead payload / CAPI matching) ---------- */
+        var q = new URLSearchParams(location.search);
+        function ss(k, v) {
+          try {
+            if (v === undefined) return sessionStorage.getItem(k);
+            sessionStorage.setItem(k, v);
+          } catch (e) {}
+        }
+        function cookie(n) {
+          var m = d.cookie.match("(?:^|; )" + n + "=([^;]*)");
+          return m ? decodeURIComponent(m[1]) : "";
+        }
+        if (q.get("fbclid")) ss("from_meta", "1");
+        // the Pixel loads late, so set _fbc ourselves for CAPI matching
+        if (q.get("fbclid") && !cookie("_fbc"))
+          d.cookie =
+            "_fbc=fb.1." +
+            Date.now() +
+            "." +
+            q.get("fbclid") +
+            ";path=/;max-age=7776000;SameSite=Lax";
+        var UTM = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+        UTM.forEach(function (k) {
+          if (q.get(k)) ss(k, q.get(k));
+        });
+
+        /* ---------- Meta Pixel: first interaction or 5s after load ---------- */
+        var pixelStarted = false,
+          pixelEvents = ["scroll", "pointerdown", "touchstart", "keydown"];
+        function startPixel() {
+          if (pixelStarted || !CONFIG.pixelId) return;
+          pixelStarted = true;
+          pixelEvents.forEach(function (ev) {
+            w.removeEventListener(ev, startPixel);
+          });
+          !(function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+              n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = "2.0";
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s);
+          })(w, d, "script", "https://connect.facebook.net/en_US/fbevents.js");
+          fbq("init", CONFIG.pixelId);
+          fbq("track", "PageView");
+        }
+        pixelEvents.forEach(function (ev) {
+          w.addEventListener(ev, startPixel, { once: true, passive: true });
+        });
+        w.addEventListener("load", function () {
+          setTimeout(startPixel, 5000);
+        });
 
         /* ---------- smooth scroll to in-page targets (content-visibility safe) ---------- */
         function scrollToId(id) {
@@ -2587,10 +2649,19 @@
             monthly_loss: data.monthly_loss || "",
             website: data.website || "",
             event_id: eventId,
+            fbp: cookie("_fbp"),
+            fbc: cookie("_fbc"),
+            utm_source: ss("utm_source") || (ss("from_meta") ? "fb" : "browser"),
+            utm_medium: ss("utm_medium") || "",
+            utm_campaign: ss("utm_campaign") || "",
+            utm_content: ss("utm_content") || "",
+            utm_term: ss("utm_term") || "",
             page_url: location.href,
+            user_agent: navigator.userAgent,
             submitted_at: new Date().toISOString(),
           };
           function done() {
+            ss("lead_event_id", eventId);
             location.href =
               CONFIG.thankYou + "?eid=" + encodeURIComponent(eventId);
           }
