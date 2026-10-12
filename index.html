@@ -2112,6 +2112,12 @@
         function money(n) {
           return Math.round(n).toLocaleString("en-US");
         }
+        // PostHog custom events (calculator → form funnel). No personal data; never breaks the page.
+        function ph(name, props, opts) {
+          try {
+            if (w.posthog && posthog.capture) posthog.capture(name, props, opts);
+          } catch (e) {}
+        }
         function reduced() {
           return (
             w.matchMedia &&
@@ -2440,7 +2446,8 @@
           ),
         };
         var calc = { clients: null, value: null },
-          verdict = null;
+          verdict = null,
+          calcFilledSent = false;
         var results = $("results"),
           calcCta = $("calc-cta"),
           softno = $("softno"),
@@ -2500,6 +2507,10 @@
             : "دخل المعلومات ديالك باش تكمل";
           var week = ready ? calc.clients * calc.value : 0,
             month = week * 4.3;
+          if (ready && !calcFilledSent) {
+            calcFilledSent = true;
+            ph("calc_filled");
+          }
           if (ready) {
             $("out-week").textContent = money(week) + " DHS";
             $("out-month").textContent = money(month) + " DHS";
@@ -2530,6 +2541,8 @@
             return;
           }
           var week = calc.clients * calc.value;
+          // every click is sent: a "no" followed by a "yes" shows who retried with bigger numbers
+          ph("calc_result", { qualified: week >= CONFIG.setupFee, weekly_loss: Math.round(week) });
           if (week < CONFIG.setupFee) {
             verdict = "no";
             qualified.hidden = true;
@@ -2642,6 +2655,8 @@
           };
           function done() {
             ss("lead_event_id", eventId);
+            // beacon so the event survives the redirect to the thank-you page
+            ph("form_submitted", null, { transport: "sendBeacon" });
             location.href =
               CONFIG.thankYou + "?eid=" + encodeURIComponent(eventId);
           }
