@@ -2221,6 +2221,8 @@
           try {
             localStorage.setItem("paid_vsl_watched", "1");
           } catch (e) {}
+          // the CTA moment (~1:59): funnel step between vsl_play and calc_filled
+          ph("vsl_unlock");
         }
         function savedPos() {
           try {
