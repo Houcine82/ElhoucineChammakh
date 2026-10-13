@@ -537,6 +537,11 @@
       .get {
         margin-top: 30px;
       }
+      /* dashed lines above and below the middle step (phones and tablets) */
+      .get:nth-child(2) {
+        padding: 30px 0;
+        border-block: 1.5px dashed var(--safe-line);
+      }
       .get h3 {
         font-size: 18px;
         text-align: center;
@@ -551,25 +556,16 @@
         position: relative;
         display: grid;
         place-items: center;
-        height: 150px;
         margin-top: 12px;
-        border: 2px solid var(--safe-line);
-        border-radius: var(--r);
-        background: var(--safe-tint);
       }
       .get .art .disc {
         position: relative;
         display: grid;
         place-items: center;
-        width: 96px;
-        height: 96px;
-        border-radius: 50%;
-        background: #fff;
-        box-shadow: var(--shadow);
       }
       .get .art svg {
-        width: 56px;
-        height: 56px;
+        width: 72px;
+        height: 72px;
         fill: none;
         stroke: var(--safe);
         stroke-width: 1.6;
@@ -983,6 +979,41 @@
       footer a {
         color: var(--muted);
       }
+      /* laptops and up: the 3 steps side by side in one row, no dashed lines */
+      @media (min-width: 1024px) {
+        #get .wrap {
+          max-width: 1040px;
+        }
+        #get .get-title,
+        #get .cta {
+          max-width: 528px;
+          margin-inline: auto;
+        }
+        #get .cta {
+          margin-top: 36px;
+        }
+        .steps {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          column-gap: 40px;
+          margin-top: 30px;
+        }
+        /* subgrid lines up the titles, icons and texts across the 3 steps */
+        .steps .get {
+          display: grid;
+          grid-row: span 3;
+          grid-template-rows: subgrid;
+          align-items: start;
+          margin-top: 0;
+        }
+        .steps .get .art {
+          align-self: center;
+        }
+        .steps .get:nth-child(2) {
+          padding: 0;
+          border: 0;
+        }
+      }
       @media (min-width: 700px) {
         .hero h1 {
           font-size: 34px;
@@ -1257,6 +1288,7 @@
         <div class="wrap">
           <h2 class="get-title">شنو غادي تاخد فالتركيب المجاني</h2>
 
+          <div class="steps">
           <div class="get">
             <h3><bdi class="n ltr">#1</bdi>: الزيارة فالمحل ديالك</h3>
             <div class="art" aria-hidden="true">
@@ -1314,6 +1346,7 @@
               الرقم ديالك يبقى محمي، و15 يوم ديال المتابعة معايا. فاليوم 15
               كتاخد التقرير ديالك.
             </p>
+          </div>
           </div>
 
           <a href="#form" class="cta">بغيت نحمي مشروعي دابا!</a>
