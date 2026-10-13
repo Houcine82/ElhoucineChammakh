@@ -7,7 +7,7 @@
     <title>كايتبلوكا ليك WhatsApp Business؟</title>
     <meta
       name="description"
-      content="شوف هاد الفيديو القصير باش تفهم علاش كيتبلوكا ليك WhatsApp Business، وشحال كايخسّرك البلوكاج."
+      content="شوف هاد الفيديو القصير باش تفهم علاش كيتبلوكا ليك WhatsApp Business. التركيب فابور و15 يوم ديال التجربة ففاس."
     />
     <meta name="theme-color" content="#ffffff" />
     <meta name="color-scheme" content="light" />
@@ -20,18 +20,6 @@
       imagesizes="(min-width: 560px) 528px, calc(100vw - 32px)"
       fetchpriority="high"
     />
-    <script>
-      // VSL gate, decided before first paint so returning visitors never see a flash
-      (function () {
-        var warm = /[?&]warm=1(&|$)/.test(location.search),
-          seen = false;
-        try {
-          if (warm) localStorage.setItem("paid_vsl_watched", "1");
-          seen = localStorage.getItem("paid_vsl_watched") === "1";
-        } catch (e) {}
-        if (warm || seen) document.documentElement.classList.add("vsl-open");
-      })();
-    </script>
     <style>
       :root {
         --bg: #ffffff;
@@ -46,20 +34,16 @@
         --locked-bg: #e8eeea;
         --locked-ink: #4d5a53;
         --locked-line: #a9b7ae;
-        --fill: #c8e6cf;
         --danger: #c92a2a;
         --safe: #0f5c2b;
         --safe-tint: #ebf8ee;
-        --gold-bg: #fff3bf;
-        --gold-ink: #3d3000;
-        --gold-line: #d4a600;
-        --track: #d3dad5;
+        --safe-line: #9fd3ad;
+        --faq: #d3f0da;
         --input-line: #858f89;
         --ph: #6b7570;
         --error: #b42318;
         --frame: #111b21;
         --wa: #25d366;
-        --wa-chat: #efeae2;
         --wa-bubble: #d9fdd3;
         --r: 16px;
         --shadow:
@@ -86,21 +70,11 @@
       body {
         position: relative;
         margin: 0;
-        min-height: 100vh;
-        min-height: 100dvh;
-        display: flex;
-        flex-direction: column;
         background: var(--bg);
         color: var(--ink);
         font: 600 17px/1.75 var(--font);
         font-synthesis: none;
         text-rendering: optimizeSpeed;
-      }
-      /* grow to fill a short (locked) page so the footer sits at the very bottom;
-         the filled tail is warm to match the testimonials container + footer */
-      main {
-        flex: 1 0 auto;
-        background: var(--bg-warm);
       }
       @media (prefers-reduced-motion: reduce) {
         html {
@@ -127,21 +101,6 @@
       }
       p {
         margin: 0;
-      }
-      b,
-      strong {
-        font-weight: 600;
-        text-decoration: underline;
-        text-decoration-thickness: 1.5px;
-        text-underline-offset: 5px;
-      }
-      .price b,
-      .pb2 b,
-      label b,
-      legend b,
-      .t-who b,
-      .res strong {
-        text-decoration: none;
       }
       [hidden] {
         display: none !important;
@@ -215,8 +174,6 @@
 
       /* ---------- buttons ---------- */
       .cta {
-        position: relative;
-        overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -245,28 +202,21 @@
       .cta:active {
         transform: translateY(1px);
       }
+      .cta:disabled {
+        opacity: 0.7;
+        cursor: wait;
+      }
+      .cta .ico {
+        width: 18px;
+        height: 18px;
+      }
       .cta:focus-visible,
       input:focus-visible,
       select:focus-visible,
-      button:focus-visible {
+      button:focus-visible,
+      summary:focus-visible {
         outline: 3px solid var(--cta);
         outline-offset: 3px;
-      }
-      .cta > * {
-        position: relative;
-      }
-      .cta .lock {
-        display: none;
-      }
-      .cta.locked {
-        background: var(--locked-bg);
-        border-color: var(--locked-line);
-        color: var(--locked-ink);
-        box-shadow: none;
-        cursor: default;
-      }
-      .cta.locked .lock {
-        display: block;
       }
 
       /* ---------- hero + VSL ---------- */
@@ -278,21 +228,17 @@
         font-size: 27px;
         text-align: center;
       }
-      .hero .sub,
-      .scarce {
-        text-wrap: balance;
-      }
       .hero .sub {
         margin-top: 10px;
         text-align: center;
         color: var(--muted);
         font-size: 17px;
+        text-wrap: balance;
       }
       .vsl {
         position: relative;
         margin-top: 18px;
         aspect-ratio: 16/9;
-        border-radius: 0;
         overflow: hidden;
         background: var(--frame);
       }
@@ -303,6 +249,21 @@
         height: 100%;
         background: #000;
         transform: scale(1.1);
+        cursor: pointer;
+      }
+      /* mini player: keeps the VSL visible (and audible) while they scroll the page */
+      .vsl.mini video {
+        position: fixed;
+        inset: auto auto 12px 12px;
+        z-index: 50;
+        width: 46vw;
+        max-width: 260px;
+        height: auto;
+        aspect-ratio: 16/9;
+        border-radius: 10px;
+        transform: none;
+        object-fit: cover;
+        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.35);
       }
       .vsl-start {
         position: absolute;
@@ -350,10 +311,6 @@
         background: rgba(0, 0, 0, 0.65);
         color: #fff;
         font: 600 14px/1.5 var(--font);
-      }
-      /* custom player: fast-start bar + pause / back 10s / mute only */
-      .vsl video {
-        cursor: pointer;
       }
       .vsl-pause {
         position: absolute;
@@ -413,33 +370,6 @@
         background: var(--wa);
         transition: width 0.25s linear;
       }
-      /* VSL gate: the calculator (and the buttons to it) appear at the ~1:59 unlock mark */
-      html:not(.vsl-open) #calc,
-      html:not(.vsl-open) .cta[href="#calc"] {
-        display: none;
-      }
-      /* testimonials gate: heading + real proof hidden until the ~1:59 unlock mark; locked prompt shown until then */
-      html:not(.vsl-open) #testimonials h2,
-      html:not(.vsl-open) #testimonials .t-proof {
-        display: none;
-      }
-      .vsl-open #testimonials .t-locked {
-        display: none;
-      }
-      .t-locked {
-        cursor: pointer;
-      }
-      .vsl-open .vprog {
-        cursor: pointer;
-      }
-      .vsl-open .vprog::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 28px;
-      }
       .vsl-msg {
         position: absolute;
         inset: auto 12px 12px 12px;
@@ -451,54 +381,54 @@
         text-align: center;
       }
 
-      /* ---------- placeholders (remove when real assets land) ---------- */
-      .ph {
-        position: relative;
+      /* ---------- testimonials ---------- */
+      .t-item {
+        margin-top: 26px;
+      }
+      .t-who {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        line-height: 1.35;
+      }
+      .t-who b {
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .t-who span {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .t-logo {
+        flex: none;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid var(--line);
+        object-fit: contain;
+      }
+      .t-anon {
         display: grid;
         place-items: center;
-        gap: 6px;
-        padding: 16px;
-        border: 2px dashed var(--locked-line);
-        border-radius: var(--r);
-        background: repeating-linear-gradient(
-          45deg,
-          #fff 0 12px,
-          #f3f5f3 12px 24px
-        );
-        color: var(--locked-ink);
-        text-align: center;
-        font-weight: 600;
+        background: var(--locked-bg);
       }
-      .ph small {
-        display: block;
-        font-size: 12px;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        color: var(--ph);
-      }
-
-      /* ---------- testimonials ---------- */
-      .tvid {
-        width: 100%;
-        margin-top: 22px;
-        aspect-ratio: 16/10;
-        cursor: pointer;
-        font: inherit;
-      }
-      .tvid .vsl-play {
-        width: 64px;
-        height: 64px;
-        background: var(--ink);
-      }
-      .tvid .vsl-play svg {
-        fill: #fff;
+      .t-anon svg {
+        width: 26px;
+        height: 26px;
+        fill: none;
+        stroke: var(--locked-ink);
+        stroke-width: 1.8;
+        stroke-linecap: round;
       }
       .vn {
         direction: ltr;
         display: flex;
         align-items: center;
         gap: 12px;
-        margin-top: 14px;
+        margin-top: 10px;
         padding: 12px 14px;
         border-radius: 18px;
         border-start-start-radius: 4px;
@@ -584,437 +514,98 @@
         color: var(--muted);
         font-size: 12px;
       }
-      /* one testimonial = who (logo + name + business) above the proof */
-      .t-item {
-        margin-top: 26px;
-      }
-      .t-who {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        line-height: 1.35;
-      }
-      .t-who div b {
-        display: block;
-        font-size: 16px;
-      }
-      .t-who div span {
-        display: block;
-        color: var(--muted);
-        font-size: 13px;
-      }
-      .t-logo {
-        flex: none;
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background: #fff;
-        border: 1px solid var(--line);
-        object-fit: contain;
-      }
-      .t-logo.ph {
-        padding: 0;
-        border-width: 2px;
-        font-size: 10px;
-      }
-      .t-anon {
-        display: grid;
-        place-items: center;
-        background: var(--locked-bg);
-      }
-      .t-anon svg {
-        width: 26px;
-        height: 26px;
-        fill: none;
-        stroke: var(--locked-ink);
-        stroke-width: 1.8;
-        stroke-linecap: round;
-      }
-      .t-item .vn,
-      .t-item .shot {
-        margin-top: 10px;
-      }
       .shot {
-        margin: 14px 0 0;
-      }
-      .shot.ph {
-        aspect-ratio: 2/1;
+        margin: 10px 0 0;
       }
       .shot img {
-        display: block;
         width: 100%;
         height: auto;
         border: 1px solid var(--line);
         border-radius: var(--r);
       }
 
-      /* ---------- calculator ---------- */
-      .card {
-        margin-top: 22px;
-        padding: 20px 16px;
-        border: 1px solid var(--line);
-        border-radius: var(--r);
-        background: var(--surface);
-        box-shadow: var(--shadow);
-      }
-      .q + .q {
-        margin-top: 26px;
-      }
-      .q-top {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 12px;
-      }
-      .q-top label {
-        font-size: 16px;
-        font-weight: 600;
-        line-height: 1.5;
-      }
-      .pill {
-        direction: ltr;
-        flex: none;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        min-width: 84px;
-        height: 38px;
-        padding: 0 12px;
-        border-radius: 999px;
-        background: var(--ink);
-        color: #fff;
-      }
-      .pill input {
-        width: 64px;
-        min-width: 0;
-        border: 0;
-        padding: 0;
-        background: none;
-        color: #fff;
-        font: 600 17px/1 var(--font);
-        text-align: center;
-        outline: 0;
-      }
-      .pill input::placeholder {
-        color: #fff;
-        opacity: 1;
-      }
-      .pill span {
-        font-size: 12px;
-        font-weight: 600;
-        opacity: 0.85;
-      }
-      .pill:focus-within {
-        outline: 3px solid var(--cta);
-        outline-offset: 2px;
-      }
-      .rng {
-        direction: ltr;
-        display: block;
-        width: 100%;
-        height: 28px;
-        margin: 14px 0 2px;
-        background: none;
-        -webkit-appearance: none;
-        appearance: none;
-        cursor: pointer;
-      }
-      .rng::-webkit-slider-runnable-track {
-        height: 6px;
-        border-radius: 999px;
-        background: linear-gradient(
-          to right,
-          var(--track) var(--x, 100%),
-          var(--ink) var(--x, 100%)
-        );
-      }
-      .rng::-moz-range-track {
-        height: 6px;
-        border-radius: 999px;
-        background: linear-gradient(
-          to right,
-          var(--track) var(--x, 100%),
-          var(--ink) var(--x, 100%)
-        );
-      }
-      .rng::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 28px;
-        height: 28px;
-        margin-top: -11px;
-        border-radius: 50%;
-        background: var(--ink);
-        border: 3px solid #fff;
-        box-shadow:
-          0 0 0 1px var(--ink),
-          0 2px 6px rgba(0, 0, 0, 0.25);
-      }
-      .rng::-moz-range-thumb {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        background: var(--ink);
-        border: 3px solid #fff;
-        box-shadow:
-          0 0 0 1px var(--ink),
-          0 2px 6px rgba(0, 0, 0, 0.25);
-      }
-      .ends {
-        direction: ltr;
-        display: flex;
-        justify-content: space-between;
-        color: var(--safe);
-        font-size: 15px;
-        font-weight: 600;
-      }
-      .results {
-        margin-top: 24px;
-      }
-      .res {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .res + .res {
-        margin-top: 10px;
-      }
-      .res span {
-        font-size: 17px;
-        font-weight: 600;
-        white-space: nowrap;
-      }
-      .res strong {
-        font-size: 30px;
-        line-height: 1.3;
-        color: var(--danger);
-        white-space: nowrap;
-      }
-      .redbox {
-        margin-top: 18px;
-        padding: 16px;
-        border-radius: 14px;
-        background: var(--danger);
-        color: #fff;
-        font-size: 17px;
-        font-weight: 600;
-        line-height: 1.7;
-        text-align: center;
-      }
-      .softno {
-        margin-top: 18px;
-        padding: 18px 16px;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        background: var(--bg-warm);
-        text-align: center;
-      }
-      .softno p {
-        font-size: 19px;
-        font-weight: 600;
-      }
-      .softno .why {
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 15px;
-      }
-      .softno a {
-        display: inline-block;
-        margin-top: 6px;
-        color: var(--muted);
-        font-weight: 600;
-      }
-
-      /* ---------- offer card ---------- */
-      .offer {
-        margin-top: 0;
-        padding: 18px 16px 20px;
-        border: 2px solid #9fd3ad;
-        border-radius: 20px;
+      /* ---------- what you get (3 cards) ---------- */
+      .get-title {
+        padding: 14px 12px;
+        border: 2px solid var(--safe-line);
+        border-radius: 16px;
         background: var(--safe-tint);
-      }
-      .offer-title {
-        padding: 8px 12px;
-        border: 2px solid #9fd3ad;
-        border-radius: 14px;
-        background: #fff;
-        color: var(--safe);
-        font-size: 21px;
-        text-align: center;
-      }
-      .step {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        margin-top: 6px;
-      }
-      .step.alt {
-        flex-direction: row-reverse;
-      }
-      .num {
-        flex: none;
-        display: grid;
-        place-items: center;
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        background: var(--safe);
-        color: #fff;
-        font-weight: 600;
-        font-size: 18px;
-      }
-      .step p {
-        font-size: 16px;
-        line-height: 1.75;
-      }
-      .zig {
-        width: 100%;
-        height: 44px;
-        margin: 4px 0;
-      }
-      .zig path {
-        fill: none;
-        stroke: var(--cta);
-        stroke-width: 2.5;
-        stroke-dasharray: 7 7;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        vector-effect: non-scaling-stroke;
-      }
-      .price-h {
         color: var(--safe);
         font-size: 23px;
         text-align: center;
       }
-      .price {
-        margin-top: 10px;
-        padding: 16px 14px;
-        border: 2px solid #9fd3ad;
-        border-radius: 16px;
-        background: #fff;
-        text-align: center;
+      .get {
+        margin-top: 30px;
       }
-      .price .p1 {
+      .get h3 {
         font-size: 18px;
-        font-weight: 600;
-      }
-      .price .p1 b {
-        display: block;
-        font-size: 28px;
-        line-height: 1.4;
-      }
-      .price .p2 {
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 16px;
-      }
-      .price .p3 {
-        margin-top: 8px;
-        font-size: 15px;
-      }
-      .meta-pre {
-        color: var(--muted);
-      }
-      .meta-link {
-        display: inline;
-        padding: 0;
-        border: 0;
-        background: none;
-        font: inherit;
-        color: var(--safe);
-        font-weight: 600;
-        text-decoration: underline;
-        text-underline-offset: 3px;
-        text-decoration-thickness: 1.5px;
-        cursor: pointer;
-      }
-      .meta-modal {
-        margin: auto;
-        max-width: 340px;
-        width: calc(100% - 40px);
-        padding: 22px 20px;
-        border: 0;
-        border-radius: 16px;
-        background: #fff;
-        color: var(--ink);
-        text-align: start;
-        box-shadow: 0 20px 55px rgba(17, 27, 33, 0.3);
-      }
-      .meta-modal::backdrop {
-        background: rgba(17, 27, 33, 0.5);
-      }
-      .meta-modal h4 {
-        margin: 0 0 10px;
-        font-size: 19px;
-        color: var(--safe);
-      }
-      .meta-modal p {
-        margin: 0 0 18px;
-        font-size: 15px;
-        line-height: 1.75;
-      }
-      .meta-close {
-        display: block;
-        width: 100%;
-        height: 46px;
-        border: 0;
-        border-radius: 12px;
-        background: var(--safe);
-        color: #fff;
-        font: 600 16px var(--font);
-        cursor: pointer;
-      }
-      .guar {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        margin-top: 14px;
-        padding: 12px 14px;
-        border: 1.5px solid var(--gold-line);
-        border-radius: 12px;
-        background: var(--gold-bg);
-        color: var(--gold-ink);
-        text-align: start;
-        font-size: 15px;
-        line-height: 1.7;
-      }
-      .guar .ico {
-        width: 26px;
-        height: 26px;
-        margin-top: 2px;
-        stroke: var(--gold-ink);
-      }
-      .payback {
-        margin-top: 14px;
-        padding: 16px 14px;
-        border: 2px solid var(--danger);
-        border-radius: 16px;
-        background: #fff;
         text-align: center;
-      }
-      .payback .pb1 {
         color: var(--safe);
-        font-size: 21px;
-        font-weight: 600;
-        line-height: 1.55;
       }
-      .payback .pb1 span {
+      .get h3 .n {
         display: inline-block;
-        padding: 0 6px;
-        border-radius: 6px;
-        background: var(--gold-bg);
-        color: var(--gold-ink);
+        margin-inline-end: 4px;
       }
-      .payback .pb2 bdi {
-        white-space: nowrap;
+      /* icon tile in place of a photo (swap for a real picture later, same slot) */
+      .get .art {
+        position: relative;
+        display: grid;
+        place-items: center;
+        height: 150px;
+        margin-top: 12px;
+        border: 2px solid var(--safe-line);
+        border-radius: var(--r);
+        background: var(--safe-tint);
       }
-      .payback .pb2 {
-        margin-top: 8px;
-        color: var(--danger);
-        font-size: 15px;
-        font-weight: 600;
+      .get .art .disc {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 96px;
+        height: 96px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: var(--shadow);
+      }
+      .get .art svg {
+        width: 56px;
+        height: 56px;
+        fill: none;
+        stroke: var(--safe);
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .get .art .meta {
+        stroke: #0467df;
+        stroke-width: 2.4;
+      }
+      .get .art .badge {
+        position: absolute;
+        right: -2px;
+        bottom: -2px;
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border: 3px solid #fff;
+        border-radius: 50%;
+        background: var(--cta);
+      }
+      .get .art .badge svg {
+        width: 18px;
+        height: 18px;
+        stroke: #fff;
+        stroke-width: 3;
+      }
+      .get p {
+        margin-top: 12px;
+        font-size: 16px;
+        line-height: 1.8;
+        text-align: center;
       }
 
-      /* ---------- social proof ---------- */
+      /* ---------- social proof stack (two screenshots + arrows + captions) ---------- */
       .proofbox {
         container-type: inline-size;
         margin-top: 22px;
@@ -1047,28 +638,6 @@
         left: 35%;
         top: 30cqw;
         transform: rotate(4deg);
-      }
-      .pc.ph {
-        border: 0;
-        font-size: clamp(14px, 4.4cqw, 22px);
-      }
-      .pc1.ph {
-        background: var(--safe);
-        color: #fff;
-      }
-      .pc1.ph small {
-        color: #cfe9d6;
-      }
-      .pc2.ph {
-        background:
-          repeating-linear-gradient(
-            45deg,
-            var(--safe-tint) 0 8px,
-            #d4eedb 8px 9px
-          ),
-          repeating-linear-gradient(-45deg, transparent 0 8px, #d4eedb 8px 9px);
-        color: var(--safe);
-        border: 2px solid #9fd3ad;
       }
       .arr {
         position: absolute;
@@ -1107,19 +676,13 @@
       }
 
       /* ---------- form ---------- */
-      .scarce {
-        margin-top: 10px;
-        color: var(--muted);
-        text-align: center;
-        font-size: 16px;
-      }
-      .scarce b {
-        display: inline-block;
-        padding: 0 8px;
-        border-radius: 6px;
-        background: #22863a;
-        color: #fff;
-        text-decoration: none;
+      .card {
+        margin-top: 22px;
+        padding: 20px 16px;
+        border: 1px solid var(--line);
+        border-radius: var(--r);
+        background: var(--surface);
+        box-shadow: var(--shadow);
       }
       .f {
         display: block;
@@ -1128,13 +691,13 @@
         border: 0;
         min-width: 0;
       }
-      .f label,
       .f .lbl {
         display: block;
         padding: 0;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
         font-size: 15px;
         font-weight: 600;
+        line-height: 1.6;
       }
       .inp {
         display: block;
@@ -1156,9 +719,6 @@
         outline: 0;
         box-shadow: 0 0 0 3px rgba(21, 127, 59, 0.18);
       }
-      .sel {
-        position: relative;
-      }
       select.inp {
         -webkit-appearance: none;
         appearance: none;
@@ -1176,10 +736,13 @@
         display: grid;
         gap: 10px;
       }
+      .opts.two {
+        grid-template-columns: 1fr 1fr;
+      }
       .opt {
         position: relative;
         display: block;
-        margin: 0 !important;
+        margin: 0;
         cursor: pointer;
       }
       .opt input {
@@ -1192,6 +755,7 @@
         align-items: center;
         gap: 12px;
         min-height: 52px;
+        height: 100%;
         padding: 12px 14px;
         border: 1.5px solid var(--input-line);
         border-radius: 12px;
@@ -1276,12 +840,61 @@
       .phone.valid .ok {
         display: block;
       }
+      /* the questions appear once the phone is valid and the name has a letter */
+      .more {
+        margin-top: 6px;
+        padding-top: 18px;
+        border-top: 1px dashed var(--line);
+      }
+      .q-last {
+        font-size: 15px;
+        line-height: 1.75;
+      }
+      .q-last u {
+        text-underline-offset: 4px;
+      }
+      .details {
+        margin: 6px 0 12px;
+      }
+      .details summary {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--safe);
+        font-size: 15px;
+        cursor: pointer;
+        list-style: none;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      .details summary::-webkit-details-marker {
+        display: none;
+      }
+      .details summary .ico {
+        width: 18px;
+        height: 18px;
+        transition: transform 0.2s;
+      }
+      .details[open] summary .ico {
+        transform: rotate(180deg);
+      }
+      .details .box {
+        margin-top: 10px;
+        padding: 12px 14px;
+        border: 1.5px solid var(--safe-line);
+        border-radius: 12px;
+        background: var(--safe-tint);
+        font-size: 15px;
+        line-height: 1.85;
+      }
+      .details .box p + p {
+        margin-top: 8px;
+      }
       .consent {
-        display: flex !important;
+        display: flex;
         align-items: flex-start;
         gap: 10px;
-        font-weight: 600 !important;
-        font-size: 14px !important;
+        font-size: 14px;
         line-height: 1.6;
         cursor: pointer;
       }
@@ -1310,18 +923,52 @@
       .invalid .phone {
         border-color: var(--error);
       }
-      .reassure {
-        margin-top: 10px;
-        color: var(--muted);
-        font-size: 14px;
-        text-align: center;
-      }
       .form-err {
         display: none;
         margin-top: 12px;
         color: var(--error);
         text-align: center;
         font-weight: 600;
+      }
+
+      /* ---------- FAQ ---------- */
+      .faq {
+        margin-top: 4px;
+      }
+      .faq details {
+        margin-top: 14px;
+        border: 2px solid var(--safe-line);
+        border-radius: 14px;
+        background: #fff;
+        overflow: hidden;
+      }
+      .faq summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        background: var(--faq);
+        font-size: 17px;
+        line-height: 1.6;
+        cursor: pointer;
+        list-style: none;
+      }
+      .faq summary::-webkit-details-marker {
+        display: none;
+      }
+      .faq summary .ico {
+        width: 22px;
+        height: 22px;
+        transition: transform 0.2s;
+      }
+      .faq details[open] summary .ico {
+        transform: rotate(45deg);
+      }
+      .faq .a {
+        padding: 14px 16px 16px;
+        font-size: 16px;
+        line-height: 1.85;
       }
 
       footer {
@@ -1346,14 +993,12 @@
       }
     </style>
 
-    <!-- PostHog (product analytics). Lean setup: VSL retention funnel only. -->
+    <!-- PostHog (product analytics). Lean setup: VSL retention funnel + form funnel only. -->
     <script>
       (function () {
-        // ↓↓↓ paste your PostHog project API key here (looks like phc_xxxxxxxx) ↓↓↓
         var PH_KEY = "phc_xqFmUf2D6JxxXGu9GYgLHpKc2vudmVDCdDtHYrzTQuyq";
-        // EU project host. If your PostHog project is US, use https://us.i.posthog.com
-        var PH_HOST = "https://eu.i.posthog.com";
-        if (!PH_KEY) return; // not configured yet → analytics off, page works normally
+        var PH_HOST = "https://eu.i.posthog.com"; // EU project
+        if (!PH_KEY) return;
         !(function (t, e) {
           var o, n, p, r;
           e.__SV ||
@@ -1412,11 +1057,11 @@
         })(document, window.posthog || []);
         posthog.init(PH_KEY, {
           api_host: PH_HOST,
-          autocapture: false, // no automatic click/scroll events
-          capture_pageview: true, // one $pageview per visit (land→play rate)
+          autocapture: false,
+          capture_pageview: true,
           capture_pageleave: false,
-          disable_session_recording: true, // recordings off
-          person_profiles: "identified_only", // no person profiles created
+          disable_session_recording: true,
+          person_profiles: "identified_only",
         });
       })();
     </script>
@@ -1425,6 +1070,9 @@
     <svg style="display: none" aria-hidden="true">
       <symbol id="i-play" viewBox="0 0 24 24">
         <path d="M7 4.5v15l12.5-7.5z" />
+      </symbol>
+      <symbol id="i-pause" viewBox="0 0 24 24">
+        <path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z" />
       </symbol>
       <symbol id="i-sound" viewBox="0 0 24 24">
         <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor" />
@@ -1474,21 +1122,15 @@
           10
         </text>
       </symbol>
-      <symbol id="i-pause" viewBox="0 0 24 24">
-        <path d="M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z" />
-      </symbol>
-      <symbol id="i-lock" viewBox="0 0 24 24">
-        <rect x="5" y="10.5" width="14" height="10" rx="2.5" />
-        <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" />
-      </symbol>
-      <symbol id="i-shield" viewBox="0 0 24 24">
-        <path
-          d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6z"
-        />
-        <path d="m8.8 12.2 2.3 2.3 4.2-4.6" />
-      </symbol>
       <symbol id="i-check" viewBox="0 0 24 24">
         <path d="m5 12.5 4.5 4.5L19 7.5" />
+      </symbol>
+      <symbol id="i-next" viewBox="0 0 24 24">
+        <path d="m14.5 6-6 6 6 6" />
+      </symbol>
+      <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12h14" />
       </symbol>
       <symbol id="i-flag-ma" viewBox="0 0 30 20">
         <rect width="30" height="20" fill="#c1272d" />
@@ -1502,6 +1144,7 @@
     </svg>
 
     <main>
+      <!-- 1. hero -->
       <section class="hero">
         <div class="wrap">
           <h1>
@@ -1515,7 +1158,11 @@
               <span class="sr">شغّل الفيديو بالصوت</span>
               <img
                 src="assets/vsl-poster.webp"
-                srcset="assets/vsl-poster-480.webp 480w, assets/vsl-poster-720.webp 720w, assets/vsl-poster.webp 1072w"
+                srcset="
+                  assets/vsl-poster-480.webp  480w,
+                  assets/vsl-poster-720.webp  720w,
+                  assets/vsl-poster.webp     1072w
+                "
                 sizes="(min-width: 560px) 528px, calc(100vw - 32px)"
                 width="1072"
                 height="606"
@@ -1530,10 +1177,11 @@
             </button>
           </div>
 
-          <a href="#calc" class="cta">شوف شحال كايخسّرك الحضر د واتساب</a>
+          <a href="#form" class="cta">بغيت نحمي مشروعي دابا!</a>
         </div>
       </section>
 
+      <!-- 2. testimonials -->
       <section class="sec warm" id="testimonials">
         <div class="wrap">
           <h2>
@@ -1541,468 +1189,362 @@
             نهار بلا مايتبلوكا ليهم الواتساب...<br />شوف شنو كايقولو!
           </h2>
 
-          <!-- locked prompt: shown until the VSL reaches the ~1:59 mark, then the proof + CTA replace it -->
-          <a href="#vsl" class="cta locked t-locked">
-            <svg class="ico lock"><use href="#i-lock" /></svg>
-            <span class="cta-label">شوف الفيديو باش تكمل</span>
-          </a>
-
-          <!-- real testimonial proof: hidden until the VSL reaches the ~1:59 mark -->
-          <div class="t-proof">
-            <!-- 1. voice note: Abderrahim, GoForVisa -->
-            <div class="t-item">
-              <div class="t-who">
-                <img
-                  class="t-logo"
-                  src="assets/proof/logo-goforvisa.webp"
-                  width="48"
-                  height="48"
-                  loading="lazy"
-                  decoding="async"
-                  alt="GoForVisa"
-                />
-                <div>
-                  <b class="ltr">Abderrahim</b>
-                  <span class="ltr">GoForVisa</span>
-                </div>
+          <!-- voice note: Abderrahim, GoForVisa -->
+          <div class="t-item">
+            <div class="t-who">
+              <img
+                class="t-logo"
+                src="assets/proof/logo-goforvisa.webp"
+                width="48"
+                height="48"
+                loading="lazy"
+                decoding="async"
+                alt="GoForVisa"
+              />
+              <div>
+                <b class="ltr">Abderrahim</b>
+                <span class="ltr">GoForVisa</span>
               </div>
-              <div class="vn" data-src="assets/proof/voice-goforvisa.mp3">
-                <button
-                  type="button"
-                  class="vn-btn"
-                  aria-label="شغّل الميساج الصوتي د عبد الرحيم"
-                >
-                  <svg class="i-play"><use href="#i-play" /></svg
-                  ><svg class="i-pause"><use href="#i-pause" /></svg>
-                </button>
-                <div class="vn-main">
-                  <div class="vn-wave"></div>
-                  <div class="vn-meta">
-                    <span>ميساج صوتي</span
-                    ><span class="vn-t ltr" data-d="1:27">1:27</span>
-                  </div>
+            </div>
+            <div class="vn" data-src="assets/proof/voice-goforvisa.mp3">
+              <button
+                type="button"
+                class="vn-btn"
+                aria-label="شغّل الميساج الصوتي د عبد الرحيم"
+              >
+                <svg class="i-play"><use href="#i-play" /></svg
+                ><svg class="i-pause"><use href="#i-pause" /></svg>
+              </button>
+              <div class="vn-main">
+                <div class="vn-wave"></div>
+                <div class="vn-meta">
+                  <span>ميساج صوتي</span
+                  ><span class="vn-t ltr" data-d="1:27">1:27</span>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- 2. WhatsApp screenshot: anonymous for privacy -->
-            <div class="t-item">
-              <div class="t-who">
-                <span class="t-logo t-anon" aria-hidden="true"
-                  ><svg viewBox="0 0 24 24">
-                    <circle cx="12" cy="8.5" r="3.5" />
-                    <path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" /></svg
-                ></span>
-                <div>
-                  <b>صاحب مشروع</b>
-                  <span>الاسم مخبي على قبل الخصوصية</span>
-                </div>
+          <!-- WhatsApp screenshot: anonymous for privacy -->
+          <div class="t-item">
+            <div class="t-who">
+              <span class="t-logo t-anon" aria-hidden="true"
+                ><svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="8.5" r="3.5" />
+                  <path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" /></svg
+              ></span>
+              <div>
+                <b>صاحب مشروع</b>
+                <span>الاسم مخبي على قبل الخصوصية</span>
               </div>
-              <figure class="shot">
+            </div>
+            <figure class="shot">
+              <img
+                src="assets/proof/chat-1.webp"
+                width="653"
+                height="260"
+                loading="lazy"
+                decoding="async"
+                alt="ميساج د شكر من كليان على الواتساب: الخدمة معقولة بزاف وشكرا بزاف"
+              />
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. what you get with the free setup -->
+      <section class="sec" id="get">
+        <div class="wrap">
+          <h2 class="get-title">شنو غادي تاخد فالتركيب المجاني</h2>
+
+          <div class="get">
+            <h3><bdi class="n ltr">#1</bdi>: الزيارة فالمحل ديالك</h3>
+            <div class="art" aria-hidden="true">
+              <span class="disc"
+                ><svg viewBox="0 0 24 24">
+                  <rect x="7" y="2.5" width="10" height="7" rx="1" />
+                  <path
+                    d="M12 9.5v3M2 12.5h20M4 12.5V21M20 12.5V21M14 12.5v4h6M16.5 14.5h1"
+                  /></svg
+              ></span>
+            </div>
+            <p>
+              كنجي عندك للمكتب ديالك ف فاس و كانشرحلك علاش كايطرالك هاداك المشكل
+            </p>
+          </div>
+
+          <div class="get">
+            <h3>
+              <bdi class="n ltr">#2</bdi>: رقم ديالك كايولي رسمي مع
+              <bdi class="ltr">meta</bdi> ف 3 أيام
+            </h3>
+            <div class="art" aria-hidden="true">
+              <span class="disc"
+                ><svg class="meta" viewBox="0 0 24 24">
+                  <path
+                    d="M12 11.2C9.9 8.2 8.2 6.8 6.4 6.8 4 6.8 2.5 9.6 2.5 12.6c0 2.6 1.3 4.6 3.4 4.6 2 0 3.5-1.6 6.1-6 2.6-4.4 4.1-4.4 5.6-4.4 2.4 0 3.9 2.8 3.9 5.8 0 2.6-1.3 4.6-3.4 4.6-1.9 0-3.4-1.7-6.1-6z"
+                  /></svg
+                ><span class="badge"
+                  ><svg viewBox="0 0 24 24"><use href="#i-check" /></svg></span
+              ></span>
+            </div>
+            <p>
+              الرقم ديالك كيولي على الطريقة الرسمية وكاتبدا تصيفت
+              <bdi class="ltr">200</bdi> ميساج فالنهار وكاتوصل حتى ل
+              <bdi class="ltr">2000</bdi> ميساج فالنهار
+            </p>
+          </div>
+
+          <div class="get">
+            <h3>
+              <bdi class="n ltr">#3</bdi>: خطة باش ما يتعاودش يطرالك هاد المشكل
+            </h3>
+            <div class="art" aria-hidden="true">
+              <span class="disc"
+                ><svg viewBox="0 0 24 24">
+                  <rect x="4.5" y="4" width="15" height="17.5" rx="2" />
+                  <rect x="9" y="2.5" width="6" height="3" rx="1" />
+                  <path
+                    d="m7.5 10.5 1.3 1.3 2.2-2.3M13 11h3.5M7.5 16l1.3 1.3 2.2-2.3M13 16.5h3.5"
+                  /></svg
+              ></span>
+            </div>
+            <p>
+              كتخرج بـخطة مكتوبة: <bdi class="ltr">3–5</bdi> قواعد واضحة باش
+              الرقم ديالك يبقى محمي، و15 يوم ديال المتابعة معايا. فاليوم 15
+              كتاخد التقرير ديالك.
+            </p>
+          </div>
+
+          <a href="#form" class="cta">بغيت نحمي مشروعي دابا!</a>
+        </div>
+      </section>
+
+      <!-- 4. results -->
+      <section class="sec warm" id="proof">
+        <div class="wrap">
+          <h2>
+            أصحاب المشاريع كيصيفطو <span class="u2">مئات الميساجات</span> كل
+            نهار بلا مايتبلوكا ليهم الواتساب...<br />شوف النتائج ديالهم!
+          </h2>
+          <div class="proofbox">
+            <div class="stack">
+              <figure class="pc pc1">
                 <img
-                  src="assets/proof/chat-1.webp"
-                  width="653"
-                  height="260"
+                  src="assets/proof/quality.webp"
+                  width="452"
+                  height="243"
                   loading="lazy"
                   decoding="async"
-                  alt="ميساج د شكر من كليان على الواتساب: الخدمة معقولة بزاف وشكرا بزاف"
+                  alt="Status: Connected — Quality rating: High"
                 />
               </figure>
+              <figure class="pc pc2">
+                <img
+                  src="assets/proof/sent.webp"
+                  width="580"
+                  height="312"
+                  loading="lazy"
+                  decoding="async"
+                  alt="700+ ميساج متصيفط من حساب كليان"
+                />
+              </figure>
+              <svg class="arr arr1" viewBox="0 0 60 130" aria-hidden="true">
+                <path
+                  d="M38 4C20 18 12 38 16 52C19 63 32 66 36 58C40 50 30 44 24 50C17 58 18 80 26 96C31 106 38 113 46 118"
+                />
+                <path d="M41.3 109.2L46 118L36 117.7" />
+              </svg>
+              <svg
+                class="arr arr2"
+                viewBox="0 0 60 130"
+                aria-hidden="true"
+                style="transform: scaleX(-1)"
+              >
+                <path
+                  d="M38 4C20 18 12 38 16 52C19 63 32 66 36 58C40 50 30 44 24 50C17 58 18 80 26 96C31 106 38 113 46 118"
+                />
+                <path d="M41.3 109.2L46 118L36 117.7" />
+              </svg>
+              <p class="cap cap1">
+                مؤشر الحساب باش عمرك ماتريسكي بالحساب ديالك
+              </p>
+              <p class="cap cap2">
+                تصيفطو <bdi class="ltr">+700</bdi> ميساج ورجع التفاعل مع
+                <bdi class="ltr">105</bdi> كليان محتمل
+              </p>
             </div>
-
-            <!-- 3. free client's voice note goes here when it arrives (copy block 1: logo, name, business, MP3, length) -->
           </div>
-
-          <a href="#calc" class="cta">شوف شحال كايخسّرك الحضر د واتساب</a>
         </div>
       </section>
 
-      <section class="sec" id="calc">
+      <!-- 5. form + FAQ -->
+      <section class="sec" id="form">
         <div class="wrap">
-          <h2>شوف شحال كايخسّرك البلوكاج د واتساب</h2>
-          <div class="card">
-            <div class="q">
-              <div class="q-top">
-                <label for="r-clients"
-                  >تقريباً شحال من كليان كايجيك من واتساب ف سيمانة؟</label
-                >
-                <span class="pill"
-                  ><input
-                    id="n-clients"
-                    type="text"
-                    inputmode="numeric"
-                    autocomplete="off"
-                    placeholder="؟"
-                    aria-label="عدد الكليان ف السيمانة"
-                /></span>
-              </div>
-              <input
-                class="rng"
-                id="r-clients"
-                type="range"
-                min="0"
-                step="1"
-                value="0"
-                aria-label="عدد الكليان ف السيمانة"
-              />
-              <div class="ends"><span>1000+</span><span>1</span></div>
-            </div>
-            <div class="q">
-              <div class="q-top">
-                <label for="r-value"
-                  >تقريباً شحال بصفة عامة كيدخل ليك كليان واحد؟</label
-                >
-                <span class="pill"
-                  ><input
-                    id="n-value"
-                    type="text"
-                    inputmode="numeric"
-                    autocomplete="off"
-                    placeholder="؟"
-                    aria-label="شحال كيدخل ليك كليان واحد بالدرهم"
-                  /><span>DHS</span></span
-                >
-              </div>
-              <input
-                class="rng"
-                id="r-value"
-                type="range"
-                min="0"
-                step="1"
-                value="0"
-                aria-label="شحال كيدخل ليك كليان واحد"
-              />
-              <div class="ends"><span>50000Dhs+</span><span>100dhs</span></div>
-            </div>
+          <h2>احجز مكاملة باش تحمي المشروع ديالك</h2>
 
-            <div class="results" id="results" hidden aria-live="polite">
-              <div class="res">
-                <span>إلا تبلوكيتي سيمانة، كتضيع:</span
-                ><strong class="ltr" id="out-week">0 DHS</strong>
+          <form class="card" id="lead" novalidate>
+            <div class="f" data-f="phone">
+              <label class="sr" for="phone">رقم WhatsApp</label>
+              <div class="phone" id="phone-box">
+                <span class="cc"
+                  ><svg><use href="#i-flag-ma" /></svg>+212</span
+                >
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  inputmode="tel"
+                  autocomplete="tel-national"
+                  placeholder="06 xx xx xx xx"
+                  required
+                />
+                <svg class="ico ok"><use href="#i-check" /></svg>
               </div>
-              <div class="res">
-                <span>إلا تبلوكيتي شهر، كتضيع:</span
-                ><strong class="ltr" id="out-month">0 DHS</strong>
-              </div>
-              <p class="redbox">
-                وإلا تبلوكيتي فمرة كتضيع فهادشي كامل + السمعة ديالك مع الكليان +
-                إلا عاودتي صوبتي نمرة جديدة غادي يعاود يطراليك نفس الشي...
+              <p class="err">
+                دخل رقم <bdi class="ltr">WhatsApp</bdi> مغربي صحيح، مثال:
+                <bdi class="ltr" style="white-space: nowrap"
+                  >06 12 34 56 78</bdi
+                >
               </p>
             </div>
+            <div class="f" data-f="name">
+              <label class="sr" for="name">الاسم الشخصي</label>
+              <input
+                class="inp"
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="given-name"
+                placeholder="الاسم الشخصي"
+                required
+              />
+              <p class="err">كتب الاسم ديالك</p>
+            </div>
 
-            <button
-              type="button"
-              class="cta locked"
-              id="calc-cta"
-              aria-disabled="true"
-            >
-              <svg class="ico lock"><use href="#i-lock" /></svg>
-              <span class="cta-label">دخل المعلومات ديالك باش تكمل</span>
+            <button type="button" class="cta" id="step1">
+              متابعة <svg class="ico"><use href="#i-next" /></svg>
             </button>
 
-            <div class="softno" id="softno" hidden role="status">
-              <p>هاد الخدمة ماتصلاحش ليك حاليا</p>
-              <p class="why">
-                على حساب الأرقام ديالك، الخدمة ماغاتكونش مربحة ليك دابا.
-              </p>
-              <a href="#calc">بدّل الأرقام ↑</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Only shown when the 7-day loss is at least the 4,500 DHS setup fee -->
-      <div id="qualified" hidden>
-        <section class="sec" id="offer">
-          <div class="wrap">
-            <div class="offer">
-              <h2 class="offer-title">هاكيفاش كانحميو مشروعك</h2>
-
-              <div class="step" style="margin-top: 18px">
-                <span class="num">1</span>
-                <p>
-                  <b>كانجي عندك للمكتب ولا كنتلاقاو</b> وكنشوف واش المشروع ديالك
-                  قادر يخدم بالطريقة الرسمية ديال <bdi class="ltr">Meta</bdi>.
-                  وإلا كانت شي حاجة حابساه، بحال
-                  <bdi class="ltr">business portfolio</bdi> إلا ماكانش مصوب
-                  مزيان، كنقولك بالضبط شنو خاصو يتصاوب هو الأول
-                </p>
-              </div>
-              <svg
-                class="zig"
-                viewBox="0 0 100 44"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <path d="M94 2V20H6V42" />
-              </svg>
-              <div class="step alt">
-                <span class="num">2</span>
-                <p>
-                  الرقم ديالك كيرجع <b>رسمي فظرف 7 أيام</b>. كتبدأ بـ 250 ميساج
-                  فاليوم وتقدر تطلع حتى لـ 2,000 ميساج فاليوم، بالطريقة الرسمية
-                  اللي كاتسمح بها <bdi class="ltr">Meta</bdi>.
-                </p>
-              </div>
-              <svg
-                class="zig"
-                viewBox="0 0 100 44"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <path d="M6 2V20H94V42" />
-              </svg>
-              <div class="step">
-                <span class="num">3</span>
-                <p>
-                  كانراقب الحساب ديالك بانتظام وكاندير ليك وللفريق ديالك حصص
-                  تدريبية باش تخدموا بالنظام بسهولة،
-                  <b
-                    >باش الرقم ديالك مايتبلوكاش مرة اخرى ومعمر شي كليان يضيع
-                    منكم</b
-                  >
-                </p>
-              </div>
-              <svg
-                class="zig"
-                viewBox="0 0 100 44"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <path d="M94 2V20H50V42" />
-              </svg>
-
-              <h3 class="price-h">ثمن الخدمة</h3>
-              <div class="price">
-                <p class="p1">
-                  <b><bdi class="ltr">4,500</bdi> درهم</b>فيها الـ
-                  <bdi class="ltr">Setup</bdi> + الشهر اللول داخل
-                </p>
-                <p class="p2">
-                  ابتداءً من الشهر الثاني:
-                  <bdi class="ltr">1,000</bdi> درهم/الشهر
-                </p>
-                <p class="p3">
-                  <span class="meta-pre"
-                    >+ مصاريف <bdi class="ltr">Meta</bdi></span
-                  >
-                  <button type="button" class="meta-link" data-meta>
-                    شنو هي؟
-                  </button>
-                </p>
-                <div class="guar">
-                  <svg class="ico"><use href="#i-shield" /></svg>
-                  <p>
-                    <b>ضمانة 30 يوم:</b> إلا تبعتي الخطة ديال النظام و تبلوكا
-                    الرقم ديالك خلال 30 يوم اللولين، كانرجع ليك
-                    <bdi class="ltr">4500 DHS</bdi> كاملة.
-                  </p>
-                </div>
-              </div>
-
-              <div class="payback">
-                <p class="pb1">
-                  النظام كيرد فلوسو إلا حيد عليك غير
-                  <span id="pb-days">7 أيام</span> ديال البلوكاج
-                </p>
-                <p class="pb2">
-                  على حساب المعلومات ديالك كتخسر
-                  <b><bdi class="ltr" id="pb-week">0 dhs</bdi></b> فالسيمانة
-                </p>
-              </div>
-            </div>
-            <a href="#form" class="cta">بغيت نحمي مشروعي دابا!</a>
-
-            <dialog
-              class="meta-modal"
-              id="meta-modal"
-              aria-labelledby="meta-modal-t"
-            >
-              <h4 id="meta-modal-t">المصاريف د <bdi class="ltr">Meta</bdi></h4>
-              <p>
-                الثمن اللي فوق هو ديال الخدمة ديالي (الإعداد + الدعم).
-                <bdi class="ltr">Meta</bdi>
-                عندها مصاريف ديالها كتخلّصها نيشان ليها على حساب المحادثات اللي
-                كتصيفط عبر الواتساب. عادةً كتكون رخيصة بزّاف
-                <bdi class="ltr">(~$0.02</bdi> على كل
-                <bdi class="ltr">utility message</bdi>) وكتبدّل على حساب نوع
-                الميساج وشحال د الكليان كتواصل معاهم. غادي نوضّح ليك كلشي
-                بالتفصيل فاللقاء.
-              </p>
-              <button type="button" class="meta-close" data-meta-close>
-                واخّا، فهمت
-              </button>
-            </dialog>
-          </div>
-        </section>
-
-        <section class="sec warm" id="proof">
-          <div class="wrap">
-            <h2>
-              أصحاب المشاريع كيصيفطو <span class="u2">مئات الميساجات</span> كل
-              نهار بلا مايتبلوكا ليهم الواتساب...<br />شوف النتائج ديالهم!
-            </h2>
-            <div class="proofbox">
-              <div class="stack">
-                <!-- quality rating screenshot -->
-                <figure class="pc pc1">
-                  <img
-                    src="assets/proof/quality.webp"
-                    width="452"
-                    height="243"
-                    loading="lazy"
-                    decoding="async"
-                    alt="Status: Connected — Quality rating: High"
-                  />
-                </figure>
-                <!-- sent messages / re-engaged leads screenshot -->
-                <figure class="pc pc2">
-                  <img
-                    src="assets/proof/sent.webp"
-                    width="580"
-                    height="312"
-                    loading="lazy"
-                    decoding="async"
-                    alt="700+ ميساج متصيفط من حساب كليان"
-                  />
-                </figure>
-                <!-- the two loop arrows (redrawn from the sketch) -->
-                <svg class="arr arr1" viewBox="0 0 60 130" aria-hidden="true">
-                  <path
-                    d="M38 4C20 18 12 38 16 52C19 63 32 66 36 58C40 50 30 44 24 50C17 58 18 80 26 96C31 106 38 113 46 118"
-                  />
-                  <path d="M41.3 109.2L46 118L36 117.7" />
-                </svg>
-                <svg
-                  class="arr arr2"
-                  viewBox="0 0 60 130"
-                  aria-hidden="true"
-                  style="transform: scaleX(-1)"
+            <!-- the BANT questions: shown once the phone is valid and the name has a letter -->
+            <div class="more" id="more" hidden>
+              <div class="f" data-f="messages_per_day">
+                <label class="lbl" for="messages_per_day"
+                  >شحال من ميساج كتصيفط فالنهار على
+                  <bdi class="ltr">WhatsApp</bdi> للكليان ديالك (أجوبة، متابعة،
+                  عروض)؟</label
                 >
-                  <path
-                    d="M38 4C20 18 12 38 16 52C19 63 32 66 36 58C40 50 30 44 24 50C17 58 18 80 26 96C31 106 38 113 46 118"
-                  />
-                  <path d="M41.3 109.2L46 118L36 117.7" />
-                </svg>
-                <p class="cap cap1">
-                  مؤشر الحساب باش عمرك ماتريسكي بالحساب ديالك
-                </p>
-                <p class="cap cap2">
-                  تصيفطو +700 ميساج ورجع التفاعل مع 105 كليان محتمل
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="sec" id="form">
-          <div class="wrap">
-            <h2>آخر خطوة باش نحميو مشروعك</h2>
-            <p class="scarce">
-              غادي نقدر نخدم غير مع <b>5 د المشاريع ففاس</b> هاد الشهر, عمر
-              المعلومات ديالك وغادي نتواصل معاك عبر الواتساب.
-            </p>
-
-            <form class="card" id="lead" novalidate>
-              <div class="f" data-f="name">
-                <label for="name">الاسم الشخصي:</label>
-                <input
+                <select
                   class="inp"
-                  id="name"
-                  name="name"
-                  type="text"
-                  autocomplete="given-name"
-                  placeholder="مثال: الحسين"
+                  id="messages_per_day"
+                  name="messages_per_day"
                   required
-                />
-                <p class="err">كتب الاسم ديالك</p>
-              </div>
-              <div class="f" data-f="phone">
-                <label for="phone"
-                  >رقم <b class="ltr">Whatsapp</b> فين غادي نتواصل معاك:</label
                 >
-                <div class="phone" id="phone-box">
-                  <span class="cc"
-                    ><svg><use href="#i-flag-ma" /></svg>+212</span
+                  <option value="" disabled selected>اختار...</option>
+                  <option value="lt50">أقل من 50</option>
+                  <option value="50_100">50 – 100</option>
+                  <option value="100_300">100 – 300</option>
+                  <option value="300p">أكثر من 300</option>
+                </select>
+                <p class="err">اختار جواب</p>
+              </div>
+
+              <div class="f" data-f="role">
+                <label class="lbl" for="role">شنو الدور ديالك فالمشروع؟</label>
+                <select class="inp" id="role" name="role" required>
+                  <option value="" disabled selected>اختار...</option>
+                  <option value="owner">مول المشروع</option>
+                  <option value="partner">شريك</option>
+                  <option value="employee">خدام فالمشروع</option>
+                </select>
+                <p class="err">اختار جواب</p>
+              </div>
+
+              <fieldset class="f" data-f="in_fes">
+                <legend class="lbl">واش نتا كاين ففاس؟</legend>
+                <div class="opts two">
+                  <label class="opt"
+                    ><input
+                      type="radio"
+                      name="in_fes"
+                      value="yes"
+                      required
+                    /><span>اه</span></label
                   >
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    inputmode="tel"
-                    autocomplete="tel-national"
-                    placeholder="06 xx xx xx xx"
-                    required
-                  />
-                  <svg class="ico ok"><use href="#i-check" /></svg>
-                </div>
-                <p class="err">
-                  دخل رقم <bdi class="ltr">WhatsApp</bdi> مغربي صحيح، مثال:
-                  <bdi class="ltr" style="white-space: nowrap"
-                    >06 12 34 56 78</bdi
+                  <label class="opt"
+                    ><input type="radio" name="in_fes" value="no" /><span
+                      >لا</span
+                    ></label
                   >
-                </p>
-              </div>
-              <div class="f" data-f="business">
-                <label for="business">شنو هو نوع المشروع ديالك:</label>
-                <input
-                  class="inp"
-                  id="business"
-                  name="business"
-                  type="text"
-                  autocomplete="organization"
-                  placeholder="مثال: وكالة فيزا، متجر ديال الحوايج، عيادة..."
-                  required
-                />
-                <p class="err">كتب نوع المشروع ديالك</p>
-              </div>
-              <div class="f" data-f="ad_spend">
-                <label for="ad_spend"
-                  >شحال تقريبا كتصرف فإعلانات
-                  <b class="ltr">meta</b> فالشهر؟</label
-                >
-                <div class="sel">
-                  <select class="inp" id="ad_spend" name="ad_spend" required>
-                    <option value="" disabled selected>
-                      اختر الميزانية الشهرية...
-                    </option>
-                    <option value="2,000 - 5,000 درهم">
-                      2,000 - 5,000 درهم
-                    </option>
-                    <option value="5,000 - 15,000 درهم">
-                      5,000 - 15,000 درهم
-                    </option>
-                    <option value="15,000 - 30,000 درهم">
-                      15,000 - 30,000 درهم
-                    </option>
-                    <option value="أكثر من 30,000 درهم">
-                      أكثر من 30,000 درهم
-                    </option>
-                  </select>
                 </div>
-                <p class="err">اختار الميزانية ديالك</p>
-              </div>
+                <p class="err">اختار جواب</p>
+              </fieldset>
+
               <fieldset class="f" data-f="blocked">
                 <legend class="lbl">
-                  واش تبلوكات ليك شي نمرة <b class="ltr">WhatsApp</b> من قبل؟
+                  واش تبلوكات ليك شي نمرة
+                  <bdi class="ltr">WhatsApp Business</bdi> من قبل؟
                 </legend>
                 <div class="opts">
                   <label class="opt"
                     ><input
                       type="radio"
                       name="blocked"
-                      value="blocked_now"
+                      value="yes"
                       required
-                    /><span>اه دابا محضورة مدة وغادي ترجع</span></label
+                    /><span
+                      >اه و كانو مشاولي كليان كاملين و بغيت نحمي النمرة الجديدة
+                      باش مانعاودش نطيح فهاد المشكل</span
+                    ></label
                   >
+                  <label class="opt"
+                    ><input type="radio" name="blocked" value="no" /><span
+                      >لا ولكن بغيت نحمي الحساب ديالي من دابا باش نبقى
+                      هاني</span
+                    ></label
+                  >
+                </div>
+                <p class="err">اختار جواب</p>
+              </fieldset>
+
+              <fieldset class="f" data-f="price_ok">
+                <legend class="lbl q-last">
+                  <u>آخر سؤال:</u> كتجرب 15 يوم فابور، وإلا بان ليك معقول، الثمن
+                  ديالي هو <bdi class="ltr">1,000</bdi> درهم فالشهر. واش مناسبك؟
+                </legend>
+                <details class="details">
+                  <summary>
+                    شنو كاين فالخدمة؟
+                    <svg class="ico"><use href="#i-down" /></svg>
+                  </summary>
+                  <div class="box">
+                    <p>
+                      إلا كنتي مناسب، كتجرب التركيب 15 يوم فابور وكتصيفط من
+                      <bdi class="ltr">100</bdi> حتى لـ
+                      <bdi class="ltr">200</bdi> ميساج فالنهار. إلا شفتي الرقم
+                      ديالك ما تبلوكاش، الثمن ديال الخدمة ديالي هو
+                      <bdi class="ltr">1,000</bdi> درهم فالشهر (غادي يزيد من
+                      بعد، ولكن ليك كيبقى ثابت): كنراقب ليك كلشي وكنعطيك الأدوات
+                      الرسمية اللي خدامين بيها.
+                    </p>
+                    <p>
+                      مصاريف <bdi class="ltr">Meta</bdi> ديال الميساجات ماداخلاش
+                      فالثمن، كتخلصها نيشان لـ <bdi class="ltr">Meta</bdi>.
+                    </p>
+                  </div>
+                </details>
+                <div class="opts two">
                   <label class="opt"
                     ><input
                       type="radio"
-                      name="blocked"
-                      value="blocked_before"
-                    /><span
-                      >اه و كانو مشاولي كليان كاملين و بغيت نحمي المشروع ديالي
-                      باش مانعاودش نطيح فهاد المشكل</span
+                      name="price_ok"
+                      value="yes"
+                      required
+                    /><span>اه, ثمن معقول</span></label
+                  >
+                  <label class="opt"
+                    ><input type="radio" name="price_ok" value="no" /><span
+                      >لا منقدرش عليه</span
                     ></label
                   >
                 </div>
@@ -2032,38 +1574,88 @@
                   autocomplete="off"
                 />
               </div>
-              <!-- calculator values, filled by the script -->
-              <input type="hidden" name="clients_per_week" id="h-clients" />
-              <input type="hidden" name="order_value" id="h-value" />
-              <input type="hidden" name="weekly_loss" id="h-week" />
-              <input type="hidden" name="monthly_loss" id="h-month" />
 
               <div class="f" data-f="consent">
                 <label class="consent"
                   ><input type="checkbox" name="consent" value="yes" required />
                   <span
-                    >موافق باش يتواصل معايا الحسين شماخ بالتيليفون ولا فالواتساب
-                    بخصوص الطلب ديالي، وقريت
-                    <a href="privacy.html" target="_blank" rel="noopener"
-                      >سياسة الخصوصية</a
-                    >.</span
-                  ></label
+                    >موافق باش يتواصل معايا الحسين شخصياً بالتيليفون ولا
+                    فالواتساب بخصوص الطلب ديالي.
+                  </span></label
                 >
-                <p class="err">خاصك توافق باش نقدرو نتواصلو معاك</p>
+                <p class="err">خاصك توافق باش نقدر نتواصل معاك</p>
               </div>
 
               <button type="submit" class="cta" id="submit">
-                بغيت نحمي مشروعي دابا!
+                متابعة <svg class="ico"><use href="#i-next" /></svg>
               </button>
-              <p class="reassure">غادي نعيط ليك باش نحددو موعد</p>
               <p class="form-err" id="form-err" role="alert">
                 ماتصيفطش الطلب، عاود جرب من فضلك.
               </p>
-            </form>
+            </div>
+          </form>
+
+          <!-- FAQ (order as in the sketch) -->
+          <div class="faq">
+            <details open>
+              <summary>
+                <span>شنو غادي يوقع للنمرة ديالي والكليان ديالي؟</span>
+                <svg class="ico"><use href="#i-plus" /></svg>
+              </summary>
+              <p class="a">
+                إلا النمرة ديالك خدامة، كتبقى بيها وكتبقى خدام بالتطبيق ديال
+                <bdi class="ltr">WhatsApp Business</bdi> فالتيليفون ديالك بحال
+                ديما. كنزيدو غير الطريقة الرسمية بجنبو باش تصيفط بزاف بلا خطر.
+                وإلا النمرة ديالك تبلوكات، كنركبو نمرة جديدة محمية. كنعطيك شي
+                قواعد بسيطة تبعهم باش تبقى النمرة محمية.
+              </p>
+            </details>
+            <details open>
+              <summary>
+                <span>علاش فابور؟ فين كاين المشكل؟</span>
+                <svg class="ico"><use href="#i-plus" /></svg>
+              </summary>
+              <p class="a">
+                حيت بغيتك تشوف بعينيك قبل ما تخلص. كنركب ليك كلشي، كتخدم بيه 15
+                يوم، وإلا ما عجبكش ما كتخلص والو. ماكاين حتى شرط مخبي.
+              </p>
+            </details>
+            <details open>
+              <summary>
+                <span>شحال غادي نخلص من بعد 15 يوم؟</span>
+                <svg class="ico"><use href="#i-plus" /></svg>
+              </summary>
+              <p class="a">
+                إلا بان ليك معقول، الخدمة ديالي بـ
+                <bdi class="ltr">1,000</bdi> درهم فالشهر، بلا حتى التزام: تقدر
+                توقف فأي شهر بغيتي. مصاريف <bdi class="ltr">Meta</bdi> ديال
+                الميساجات ماداخلاش، كتخلصها نيشان لـ
+                <bdi class="ltr">Meta</bdi>، وغادي نوريك تقدير على حساب الحجم
+                ديالك فالزيارة ان شاء الله (تقريباً
+                <bdi class="ltr">35</bdi> درهم لكل <bdi class="ltr">100</bdi>
+                ميساج).
+              </p>
+            </details>
+            <details open>
+              <summary>
+                <span
+                  >واش هادشي رسمي؟ واش <bdi class="ltr">Meta</bdi> ما غاديش
+                  تبلوكيني؟</span
+                >
+                <svg class="ico"><use href="#i-plus" /></svg>
+              </summary>
+              <p class="a">
+                كنخدمو بـ <bdi class="ltr">WhatsApp Cloud API</bdi>، الحل الرسمي
+                اللي <bdi class="ltr">Meta</bdi> دارت للشركات. ماشي تطبيق مقرصن
+                ولا أداة أوتوماتيكية. وكنراقب الجودة ديال النمرة ديالك كل نهار
+                باش نتدخلو قبل ما يوقع أي مشكل.
+              </p>
+            </details>
           </div>
-        </section>
-      </div>
-      <!-- /#qualified -->
+
+          <a href="#form" class="cta">بغيت نحمي مشروعي دابا!</a>
+        </div>
+      </section>
     </main>
 
     <footer>
@@ -2086,13 +1678,21 @@
 
     <script>
       var CONFIG = {
-        endpoint: "https://leadworker-elhoucinepaidoffer.elhoucinechammakh.workers.dev", // lead worker (fans out to CRM + Telegram + CAPI). Empty = form just validates and goes to thank-you.
-        pixelId: "1706207423798184", // Meta dataset (same one the free offer used). Empty = no Pixel
-        thankYou: "thank-you.html",
-        setupFee: 4500, // qualifying line: the 7-day loss must be at least this
+        endpoint:
+          "https://leadworker-elhoucinepaidoffer.elhoucinechammakh.workers.dev", // lead worker (CRM + Telegram + CAPI for qualified, CRM "Not a fit" only for the rest). Empty = no lead is sent
+        pixelId: "1706207423798184", // Meta dataset. Empty = no Pixel
+        thankYou: "thank-you.html", // qualified: fires the Pixel Lead
+        softNo: "merci.html", // not qualified: no Lead, protection rules instead
+        // qualifying line: every one of these must be true
+        qualify: {
+          messages_per_day: ["50_100", "100_300", "300p"], // 50+ messages a day
+          in_fes: ["yes"],
+          blocked: ["yes"], // blocked before ("just scared" is not enough)
+          price_ok: ["yes"],
+        },
         vsl: {
-          src: "https://videos.elhoucinechammakh.com/ELHOUCINEPAIDVSL.mp4", // paid-offer VSL (16:9 landscape), R2 via custom domain
-          length: "2:16", // shown on the poster. Real length, rounded UP
+          src: "https://videos.elhoucinechammakh.com/ElhoucineFreeTrialFinal.mp4", // 16:9 landscape, R2 via custom domain
+          length: "2:03", // shown on the poster. Real length, rounded UP
           fastStart: { at: 35, show: 0.4 }, // the bar shows 40% after 35s (or after 25% of a shorter video), then a natural pace
         },
       };
@@ -2109,23 +1709,21 @@
           s = Math.max(0, Math.round(s));
           return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2);
         }
-        function money(n) {
-          return Math.round(n).toLocaleString("en-US");
-        }
-        // PostHog custom events (calculator → form funnel). No personal data; never breaks the page.
-        function ph(name, props, opts) {
-          try {
-            if (w.posthog && posthog.capture) posthog.capture(name, props, opts);
-          } catch (e) {}
-        }
         function reduced() {
           return (
             w.matchMedia &&
             w.matchMedia("(prefers-reduced-motion: reduce)").matches
           );
         }
+        // PostHog custom events. No personal data; never breaks the page.
+        function ph(name, props, opts) {
+          try {
+            if (w.posthog && posthog.capture)
+              posthog.capture(name, props, opts);
+          } catch (e) {}
+        }
 
-        /* ---------- UTM + fbclid capture (kept for the lead payload / CAPI matching) ---------- */
+        /* ---------- UTM + fbclid capture (lead payload / CAPI matching) ---------- */
         var q = new URLSearchParams(location.search);
         function ss(k, v) {
           try {
@@ -2146,8 +1744,13 @@
             "." +
             q.get("fbclid") +
             ";path=/;max-age=7776000;SameSite=Lax";
-        var UTM = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
-        UTM.forEach(function (k) {
+        [
+          "utm_source",
+          "utm_medium",
+          "utm_campaign",
+          "utm_content",
+          "utm_term",
+        ].forEach(function (k) {
           if (q.get(k)) ss(k, q.get(k));
         });
 
@@ -2163,7 +1766,9 @@
           !(function (f, b, e, v, n, t, s) {
             if (f.fbq) return;
             n = f.fbq = function () {
-              n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+              n.callMethod
+                ? n.callMethod.apply(n, arguments)
+                : n.queue.push(arguments);
             };
             if (!f._fbq) f._fbq = n;
             n.push = n;
@@ -2186,7 +1791,7 @@
           setTimeout(startPixel, 5000);
         });
 
-        /* ---------- smooth scroll to in-page targets (content-visibility safe) ---------- */
+        /* ---------- every CTA scrolls to the form title (content-visibility safe) ---------- */
         function scrollToId(id) {
           var t = $(id);
           if (!t) return;
@@ -2202,28 +1807,16 @@
         }
         d.addEventListener("click", function (e) {
           var a = e.target.closest && e.target.closest('a[href^="#"]');
-          if (!a || a.getAttribute("aria-disabled") === "true") return;
+          if (!a) return;
           e.preventDefault();
           scrollToId(a.getAttribute("href").slice(1));
         });
 
-        /* ---------- VSL: tap to play, fast-start bar, only pause / back 10s / mute ---------- */
+        /* ---------- VSL: open (no gate), tap to play, fast-start bar, pause / back 10s / mute, mini player ---------- */
         var vsl = $("vsl"),
-          start = $("vsl-start");
+          start = $("vsl-start"),
+          POS_KEY = "trial_vsl_pos";
         $("vsl-len").textContent = CONFIG.vsl.length;
-        var POS_KEY = "paid_vsl_pos";
-        function isOpen() {
-          return root.classList.contains("vsl-open");
-        }
-        function openGate() {
-          if (isOpen()) return;
-          root.classList.add("vsl-open");
-          try {
-            localStorage.setItem("paid_vsl_watched", "1");
-          } catch (e) {}
-          // the CTA moment (~1:59): funnel step between vsl_play and calc_filled
-          ph("vsl_unlock");
-        }
         function savedPos() {
           try {
             return parseFloat(localStorage.getItem(POS_KEY)) || 0;
@@ -2237,12 +1830,10 @@
           } catch (e) {}
         }
         function shown(t, dur) {
-          // front-loaded bar: fast at first, then a natural pace to the end.
-          // Once unlocked the bar shows real progress, since it becomes tappable to seek
+          // front-loaded bar: fast at first, then a natural pace to the end
           if (!dur) return 0;
-          var r = Math.min(1, t / dur);
-          if (isOpen()) return r;
-          var k = Math.min(CONFIG.vsl.fastStart.at, dur * 0.25) / dur,
+          var r = Math.min(1, t / dur),
+            k = Math.min(CONFIG.vsl.fastStart.at, dur * 0.25) / dur,
             s = CONFIG.vsl.fastStart.show;
           return r <= k ? s * (r / k) : s + (1 - s) * ((r - k) / (1 - k));
         }
@@ -2281,53 +1872,50 @@
           big.innerHTML =
             '<span class="vsl-play"><svg><use href="#i-play"/></svg></span>';
 
-          function toggle() {
-            v.paused ? v.play().catch(function () {}) : v.pause();
-          }
-          v.addEventListener("click", toggle);
-          v.addEventListener("play", function () {
-            ctl.classList.add("playing");
-            vsl.classList.remove("paused");
-            phVsl("vsl_play");
-          });
-          v.addEventListener("pause", function () {
-            ctl.classList.remove("playing");
-            vsl.classList.add("paused");
-          });
-          v.addEventListener("volumechange", function () {
-            ctl.classList.toggle("muted", v.muted);
-          });
-          var furthest = 0,
-            lastSaved = -1;
           // PostHog VSL retention funnel: play -> 25 -> 50 -> 75 -> complete (each once)
           var phSent = {};
           function phVsl(name) {
             if (phSent[name]) return;
             phSent[name] = 1;
-            try {
-              if (window.posthog && posthog.capture) posthog.capture(name);
-            } catch (e) {}
+            ph(name);
           }
+          function toggle() {
+            v.paused ? v.play().catch(function () {}) : v.pause();
+          }
+          // mini player while it plays and the big box is off screen; pausing closes it
+          var inView = true;
+          function mini() {
+            vsl.classList.toggle("mini", !inView && !v.paused);
+          }
+          if (w.IntersectionObserver)
+            new IntersectionObserver(function (es) {
+              inView = es[0].isIntersecting;
+              mini();
+            }).observe(vsl);
+
+          v.addEventListener("click", toggle);
+          v.addEventListener("play", function () {
+            ctl.classList.add("playing");
+            vsl.classList.remove("paused");
+            phVsl("vsl_play");
+            mini();
+          });
+          v.addEventListener("pause", function () {
+            ctl.classList.remove("playing");
+            vsl.classList.add("paused");
+            mini();
+          });
+          v.addEventListener("volumechange", function () {
+            ctl.classList.toggle("muted", v.muted);
+          });
+          var lastSaved = -1;
           v.addEventListener("loadedmetadata", function () {
             // resume where they stopped (unless that was the very end)
             var p = savedPos();
-            if (p > 0 && p < v.duration - 3) {
-              v.currentTime = p;
-              furthest = p;
-            }
+            if (p > 0 && p < v.duration - 3) v.currentTime = p;
           });
           v.addEventListener("timeupdate", function () {
             var t = v.currentTime;
-            if (!isOpen()) {
-              // seek guard: no jumping past the furthest point watched (media keys, devtools...)
-              if (t > furthest + 2) {
-                v.currentTime = furthest;
-                return;
-              }
-              furthest = Math.max(furthest, t);
-              // unlock at ~1:59 (or just before the end if a shorter video is ever swapped in)
-              if (v.duration && t >= Math.min(119, v.duration - 1)) openGate();
-            }
             if (Math.floor(t) !== lastSaved)
               savePos((lastSaved = Math.floor(t)));
             if (v.duration) {
@@ -2342,11 +1930,6 @@
             bar.firstChild.style.width = "100%";
             savePos(0);
             phVsl("vsl_complete");
-          });
-          bar.addEventListener("click", function (e) {
-            if (!isOpen() || !v.duration) return;
-            var r = bar.getBoundingClientRect();
-            v.currentTime = ((e.clientX - r.left) / r.width) * v.duration;
           });
           ctl.addEventListener("click", function (e) {
             var b = e.target.closest("button");
@@ -2368,20 +1951,7 @@
         }
         start.addEventListener("click", startVideo);
 
-        /* ---------- testimonial video (click to load) + voice notes ---------- */
-        d.addEventListener("click", function (e) {
-          var b = e.target.closest && e.target.closest(".tvid");
-          if (!b || !b.dataset.video) return;
-          var tv = d.createElement("video");
-          tv.src = b.dataset.video;
-          tv.controls = true;
-          tv.playsInline = true;
-          tv.setAttribute("playsinline", "");
-          tv.style.cssText =
-            "width:100%;margin-top:22px;border-radius:16px;aspect-ratio:16/10;background:#000";
-          b.replaceWith(tv);
-          tv.play().catch(function () {});
-        });
+        /* ---------- voice note ---------- */
         var currentVoice = null;
         function voice(vn) {
           if (vn._a) return vn._a;
@@ -2431,138 +2001,14 @@
           a.paused ? a.play().catch(function () {}) : a.pause();
         });
 
-        /* ---------- loss calculator ---------- */
-        function range(a, b, s) {
-          var o = [];
-          for (var i = a; i <= b; i += s) o.push(i);
-          return o;
-        }
-        var STEPS = {
-          clients: range(1, 10, 1).concat(
-            range(15, 50, 5),
-            [75, 100, 150, 200, 300, 400, 500, 750, 1000],
-          ),
-          value: range(100, 1000, 100).concat(
-            range(1500, 10000, 500),
-            range(15000, 50000, 5000),
-          ),
-        };
-        var calc = { clients: null, value: null },
-          verdict = null,
-          calcFilledSent = false;
-        var results = $("results"),
-          calcCta = $("calc-cta"),
-          softno = $("softno"),
-          qualified = $("qualified");
-
-        function bindSlider(key, rngId, numId) {
-          var rng = $(rngId),
-            num = $(numId),
-            steps = STEPS[key],
-            max = steps.length - 1;
-          rng.max = max;
-          rng.value = max; // reversed so the small values sit on the right (RTL reading)
-          function paint() {
-            rng.style.setProperty("--x", (rng.value / max) * 100 + "%");
-          }
-          function nearest(n) {
-            var best = 0;
-            for (var i = 0; i < steps.length; i++)
-              if (Math.abs(steps[i] - n) < Math.abs(steps[best] - n)) best = i;
-            return best;
-          }
-          rng.addEventListener("input", function () {
-            var val = steps[max - rng.value];
-            calc[key] = val;
-            num.value = max - rng.value === max ? val + "+" : String(val);
-            paint();
-            update();
-          });
-          num.addEventListener("input", function () {
-            var n = parseInt(num.value.replace(/[^\d]/g, ""), 10);
-            calc[key] = n > 0 ? n : null;
-            if (n > 0) {
-              rng.value = max - nearest(n);
-              paint();
-            }
-            update();
-          });
-          paint();
-        }
-        bindSlider("clients", "r-clients", "n-clients");
-        bindSlider("value", "r-value", "n-value");
-
-        function daysPhrase(x) {
-          if (x <= 1) return "نهار واحد";
-          if (x === 2) return "جوج أيام";
-          if (x <= 10) return x + " أيام";
-          return x + " نهار";
-        }
-        function update() {
-          var ready = !!(calc.clients && calc.value);
-          results.hidden = !ready;
-          calcCta.classList.toggle("locked", !ready);
-          if (ready) calcCta.removeAttribute("aria-disabled");
-          else calcCta.setAttribute("aria-disabled", "true");
-          calcCta.querySelector(".cta-label").textContent = ready
-            ? "بغيت نحمي المشروع ديالي دابا"
-            : "دخل المعلومات ديالك باش تكمل";
-          var week = ready ? calc.clients * calc.value : 0,
-            month = week * 4.3;
-          if (ready && !calcFilledSent) {
-            calcFilledSent = true;
-            ph("calc_filled");
-          }
-          if (ready) {
-            $("out-week").textContent = money(week) + " DHS";
-            $("out-month").textContent = money(month) + " DHS";
-            $("pb-week").textContent = money(week) + " dhs";
-            $("pb-days").textContent = daysPhrase(
-              Math.ceil(CONFIG.setupFee / (week / 7)),
-            );
-            $("h-clients").value = calc.clients;
-            $("h-value").value = calc.value;
-            $("h-week").value = Math.round(week);
-            $("h-month").value = Math.round(month);
-          }
-          // a changed number clears a "no"; a "yes" stays open only while the numbers still qualify
-          if (verdict === "no") {
-            softno.hidden = true;
-            calcCta.hidden = false;
-            verdict = null;
-          }
-          if (verdict === "yes" && (!ready || week < CONFIG.setupFee)) {
-            qualified.hidden = true;
-            verdict = null;
-          }
-        }
-        calcCta.addEventListener("click", function () {
-          if (calcCta.classList.contains("locked")) {
-            var empty = !calc.clients ? $("n-clients") : $("n-value");
-            empty.focus();
-            return;
-          }
-          var week = calc.clients * calc.value;
-          // every click is sent: a "no" followed by a "yes" shows who retried with bigger numbers
-          ph("calc_result", { qualified: week >= CONFIG.setupFee, weekly_loss: Math.round(week) });
-          if (week < CONFIG.setupFee) {
-            verdict = "no";
-            qualified.hidden = true;
-            softno.hidden = false;
-            calcCta.hidden = true;
-          } else {
-            verdict = "yes";
-            softno.hidden = true;
-            qualified.hidden = false;
-            scrollToId("offer");
-          }
-        });
-
         /* ---------- form ---------- */
         var form = $("lead"),
+          more = $("more"),
+          step1 = $("step1"),
           btn = $("submit"),
           ferr = $("form-err"),
           phoneIn = $("phone"),
+          nameIn = $("name"),
           phoneBox = $("phone-box");
         function normPhone(raw) {
           var n = (raw || "").replace(/\D/g, "");
@@ -2571,9 +2017,35 @@
           n = n.replace(/^0+/, "");
           return /^[5-7]\d{8}$/.test(n) ? "+212" + n : "";
         }
+        function setInvalid(name, bad) {
+          var el = form.querySelector('[data-f="' + name + '"]');
+          if (el) el.classList.toggle("invalid", bad);
+          return bad;
+        }
+        function scrollField(name) {
+          form.querySelector('[data-f="' + name + '"]').scrollIntoView({
+            behavior: reduced() ? "auto" : "smooth",
+            block: "center",
+          });
+        }
+
+        // the questions unlock once the phone is valid and the name has at least one letter
+        var unlocked = false;
+        function unlock() {
+          if (unlocked) return;
+          unlocked = true;
+          more.hidden = false;
+          step1.hidden = true;
+          ph("form_unlocked");
+        }
+        function maybeUnlock() {
+          if (normPhone(phoneIn.value) && nameIn.value.trim()) unlock();
+        }
         phoneIn.addEventListener("input", function () {
           phoneBox.classList.toggle("valid", !!normPhone(phoneIn.value));
+          maybeUnlock();
         });
+        nameIn.addEventListener("input", maybeUnlock);
         phoneIn.addEventListener("blur", function () {
           var p = normPhone(phoneIn.value);
           if (p)
@@ -2584,11 +2056,14 @@
                 .replace(/(\d)(\d{2})(\d{2})(\d{2})(\d{2})/, "$1 $2 $3 $4 $5");
           else if (phoneIn.value.trim()) setInvalid("phone", true);
         });
-        function setInvalid(name, bad) {
-          var el = form.querySelector('[data-f="' + name + '"]');
-          if (el) el.classList.toggle("invalid", bad);
-          return bad;
-        }
+        step1.addEventListener("click", function () {
+          var badPhone = setInvalid("phone", !normPhone(phoneIn.value)),
+            badName = setInvalid("name", !nameIn.value.trim());
+          if (badPhone || badName)
+            return scrollField(badPhone ? "phone" : "name");
+          unlock();
+          $("messages_per_day").focus();
+        });
         ["change", "input"].forEach(function (ev) {
           form.addEventListener(ev, function (e) {
             var f = e.target.closest(".f");
@@ -2603,6 +2078,7 @@
 
         form.addEventListener("submit", function (e) {
           e.preventDefault();
+          if (!unlocked) return step1.click();
           ferr.style.display = "none";
           var fd = new FormData(form),
             data = {},
@@ -2612,41 +2088,43 @@
           });
           var phone = normPhone(data.phone);
           [
-            ["name", !data.name || data.name.length < 2],
             ["phone", !phone],
-            ["business", !data.business || data.business.length < 2],
-            ["ad_spend", !data.ad_spend],
+            ["name", !data.name || data.name.length < 2],
+            ["messages_per_day", !data.messages_per_day],
+            ["role", !data.role],
+            ["in_fes", !data.in_fes],
             ["blocked", !data.blocked],
+            ["price_ok", !data.price_ok],
             ["consent", data.consent !== "yes"],
           ].forEach(function (c) {
             if (setInvalid(c[0], c[1]) && !first) first = c[0];
           });
-          if (first) {
-            form.querySelector('[data-f="' + first + '"]').scrollIntoView({
-              behavior: reduced() ? "auto" : "smooth",
-              block: "center",
-            });
-            return;
-          }
+          if (first) return scrollField(first);
 
-          var eventId = uuid();
-          // Sent form-encoded (string values) so there's no CORS preflight and
-          // keepalive can finish after the redirect. The worker fans this out.
+          // qualification is decided here, never by which page loads afterwards
+          var reasons = [];
+          Object.keys(CONFIG.qualify).forEach(function (k) {
+            if (CONFIG.qualify[k].indexOf(data[k]) < 0) reasons.push(k);
+          });
+          var qualified = !reasons.length,
+            eventId = uuid();
+          // form-encoded (string values): no CORS preflight, keepalive can finish after the redirect
           var payload = {
             name: data.name || "",
             phone: phone,
-            business: data.business || "",
-            ad_spend: data.ad_spend || "",
-            blocked: data.blocked || "",
-            clients_per_week: data.clients_per_week || "",
-            order_value: data.order_value || "",
-            weekly_loss: data.weekly_loss || "",
-            monthly_loss: data.monthly_loss || "",
+            messages_per_day: data.messages_per_day,
+            role: data.role,
+            in_fes: data.in_fes,
+            blocked: data.blocked,
+            price_ok: data.price_ok,
+            qualified: qualified ? "yes" : "no",
+            not_fit_reason: reasons.join(", "),
             website: data.website || "",
             event_id: eventId,
             fbp: cookie("_fbp"),
             fbc: cookie("_fbc"),
-            utm_source: ss("utm_source") || (ss("from_meta") ? "fb" : "browser"),
+            utm_source:
+              ss("utm_source") || (ss("from_meta") ? "fb" : "browser"),
             utm_medium: ss("utm_medium") || "",
             utm_campaign: ss("utm_campaign") || "",
             utm_content: ss("utm_content") || "",
@@ -2656,11 +2134,21 @@
             submitted_at: new Date().toISOString(),
           };
           function done() {
-            ss("lead_event_id", eventId);
-            // beacon so the event survives the redirect to the thank-you page
+            // beacons so the events survive the redirect
             ph("form_submitted", null, { transport: "sendBeacon" });
-            location.href =
-              CONFIG.thankYou + "?eid=" + encodeURIComponent(eventId);
+            if (qualified) {
+              ph("form_qualified", null, { transport: "sendBeacon" });
+              ss("lead_event_id", eventId); // only qualified leads can ever fire the Lead on the thank-you page
+              location.href =
+                CONFIG.thankYou + "?eid=" + encodeURIComponent(eventId);
+            } else {
+              ph(
+                "form_not_qualified",
+                { reasons: reasons.join(", ") },
+                { transport: "sendBeacon" },
+              );
+              location.href = CONFIG.softNo;
+            }
           }
           if (!CONFIG.endpoint) {
             console.warn("CONFIG.endpoint is empty; lead not sent:", payload);
@@ -2671,7 +2159,7 @@
           var ctrl = w.AbortController ? new AbortController() : null,
             t = setTimeout(function () {
               ctrl && ctrl.abort();
-            }, 5000);
+            }, 10000);
           fetch(CONFIG.endpoint, {
             method: "POST",
             body: new URLSearchParams(payload),
@@ -2689,24 +2177,6 @@
               ferr.style.display = "block";
             });
         });
-
-        // Meta-fees popup
-        var metaModal = document.getElementById("meta-modal");
-        if (metaModal && typeof metaModal.showModal === "function") {
-          document.querySelectorAll("[data-meta]").forEach(function (b) {
-            b.addEventListener("click", function () {
-              metaModal.showModal();
-            });
-          });
-          metaModal
-            .querySelector("[data-meta-close]")
-            .addEventListener("click", function () {
-              metaModal.close();
-            });
-          metaModal.addEventListener("click", function (e) {
-            if (e.target === metaModal) metaModal.close();
-          });
-        }
       })();
     </script>
   </body>
