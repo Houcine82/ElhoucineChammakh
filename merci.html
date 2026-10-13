@@ -5,64 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="format-detection" content="telephone=no">
 <meta name="robots" content="noindex">
-<meta name="description" content="القواعد اللي كنعطي للكليان ديالي باش يحميو النمرة ديال واتساب ديالهم.">
 <link rel="icon" href="data:,">
 <title>شكرا! وصلني الطلب ديالك</title>
 <style>
-/* Soft-no page for leads the form didn't qualify: no Pixel, no Lead event, just useful rules. */
-:root{--bg:#fff;--warm:#f6f4ef;--ink:#17201b;--muted:#56615b;--cta:#157f3b;--safe:#0f5c2b;--safe-tint:#ebf8ee;--safe-line:#9fd3ad;--line:#dfe4e0;
+/* Page for leads the form didn't qualify: no Pixel, no Lead event. */
+:root{--bg:#fff;--ink:#17201b;--muted:#56615b;--cta:#157f3b;--line:#dfe4e0;--warm:#f6f4ef;
   --font:system-ui,-apple-system,"Segoe UI","Noto Sans Arabic","Geeza Pro",Tahoma,Arial,sans-serif}
-*,*::before,*::after{box-sizing:border-box}
-html,body{max-width:100vw;overflow-x:hidden;overflow-x:clip}
-body{margin:0;background:var(--bg);color:var(--ink);font:600 17px/1.75 var(--font);font-synthesis:none;text-rendering:optimizeSpeed}
-p{margin:0}
-.ltr{direction:ltr;unicode-bidi:isolate}
-main{max-width:560px;margin:0 auto;padding:36px 16px 40px}
-.top{text-align:center}
-.check{width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:var(--safe-tint);display:grid;place-items:center}
-.check svg{width:34px;height:34px;fill:none;stroke:var(--cta);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-h1{margin:0;font-size:25px;line-height:1.4;font-weight:600}
-.top p{margin-top:10px;color:var(--muted);font-size:16px;text-wrap:balance}
-h2{margin:30px 0 0;font-size:20px;line-height:1.5;font-weight:600;text-align:center;color:var(--safe)}
-ol{list-style:none;margin:18px 0 0;padding:0;counter-reset:r}
-li{counter-increment:r;display:flex;gap:12px;align-items:flex-start;margin-top:12px;padding:14px;border:1.5px solid var(--line);border-radius:14px;background:#fff;font-size:16px;line-height:1.8}
-li::before{content:counter(r);flex:none;display:grid;place-items:center;width:32px;height:32px;margin-top:2px;border-radius:50%;background:var(--safe);color:#fff;font-size:16px}
-li b{display:block;font-weight:600}
-li span{display:block;color:var(--muted);font-size:15px}
-.call{margin-top:26px;padding:18px 16px;border:2px solid var(--safe-line);border-radius:16px;background:var(--safe-tint);text-align:center}
-.call p{font-size:16px}
-.num{margin-top:6px;font-size:24px;letter-spacing:.04em;color:var(--ink)}
-.save{display:inline-flex;align-items:center;gap:8px;margin-top:10px;padding:10px 16px;border:1.5px solid var(--cta);border-radius:12px;background:#fff;color:var(--cta);font:inherit;font-size:15px;text-decoration:none}
-.save svg{flex:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;background:var(--bg);color:var(--ink);font:600 17px/1.75 var(--font);font-synthesis:none}
+main{flex:1;display:grid;place-items:center;padding:40px 16px;text-align:center}
+.check{width:72px;height:72px;margin:0 auto 18px;border-radius:50%;background:#ebf8ee;display:grid;place-items:center}
+.check svg{width:38px;height:38px;fill:none;stroke:var(--cta);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+h1{margin:0;font-size:26px;line-height:1.4;font-weight:600}
+p{margin:8px 0 0;color:var(--muted)}
 footer{padding:20px 16px;border-top:1px solid var(--line);background:var(--warm);color:var(--muted);font-size:13px;text-align:center}
+footer a{color:inherit}
 </style>
 </head>
 <body>
 <main>
-  <div class="top">
+  <div>
     <div class="check"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
     <h1>شكرا! وصلني الطلب ديالك</h1>
-    <p>حاليا، التركيب المجاني محجوز للمشاريع اللي ففاس واللي سبق ليها تبلوكات ليها شي نمرة.</p>
-    <p>ولكن ما بغيتكش تخرج بلا والو. هادو القواعد اللي كنعطي للكليان ديالي باش يحميو النمرة ديالهم:</p>
-  </div>
-
-  <h2>قواعد باش تحمي النمرة ديالك</h2>
-  <ol>
-    <li><div><b>صيفط غير للناس اللي عطاوك النمرة ديالهم</b><span>ولا اللي بداو معاك هوما الهضرة. الميساجات لناس ما كيعرفوكش هي أكبر سبب ديال البلوكاج.</span></div></li>
-    <li><div><b>ما تخدمش بشي نسخة معدّلة ديال واتساب</b><span>بحال <bdi class="ltr">WhatsApp GB</bdi> ولا <bdi class="ltr">WhatsApp Plus</bdi>، ولا بشي برنامج كيصيفط أوتوماتيكيا من التيليفون ديالك.</span></div></li>
-    <li><div><b>ما تصيفطش نفس الميساج لبزاف ديال الناس فدقة وحدة</b><span>بدّل الكلام شوية، وصيفط بشوية على شوية.</span></div></li>
-    <li><div><b>ما تزيدش الناس لمجموعات بلا ما يوافقو</b><span>استعمل الـ <bdi class="ltr">Broadcast</bdi> (الإرسال الجماعي): كيوصل غير للناس اللي مسجلين النمرة ديالك.</span></div></li>
-    <li><div><b>عطي ديما للناس طريقة ساهلة باش يوقفو العروض</b><span>مثلا: "صيفط <bdi class="ltr">STOP</bdi> إلا ما بغيتيش توصلك العروض". اللي ما لقاش كيفاش يوقف، كيدير <bdi class="ltr">Signaler</bdi>.</span></div></li>
-    <li><div><b>خلي الكليان يبداو معاك الهضرة</b><span>حط رابط <bdi class="ltr">wa.me</bdi> فالإعلانات والبيو ديالك، وجاوب بسرعة. المحادثات اللي كيبداها الكليان هوما الأكثر أمان.</span></div></li>
-    <li><div><b>كمّل البروفيل ديال البيزنس</b><span>الاسم، اللوغو، الوصف والعنوان. الحساب الكامل كيبان جدي للناس.</span></div></li>
-  </ol>
-
-  <div class="call">
-    <p>إلا تبلوكات ليك النمرة شي نهار، عيّط ليا نيشان:</p>
-    <p class="num"><bdi dir="ltr">06 05 12 55 57</bdi></p>
-    <a class="save" href="elhoucine-chammakh.vcf"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>سجّل الرقم فالتيليفون ديالك</a>
+    <p>سأتصل بك إذا استوفيت الشروط</p>
   </div>
 </main>
-<footer dir="ltr">© 2026 CHAMMAKH EL HOUCINE · Fès, Maroc · <a href="privacy.html" style="color:inherit">Politique de confidentialité</a></footer>
+<footer dir="ltr">© 2026 CHAMMAKH EL HOUCINE · Fès, Maroc · <a href="privacy.html">Politique de confidentialité</a></footer>
 </body>
 </html>
